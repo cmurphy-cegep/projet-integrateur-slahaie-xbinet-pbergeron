@@ -10,6 +10,7 @@
                 <input type="password" id="motDePasse" v-model="motDePasse">
             </div>
             <button>Se connecter</button>
+            <a href="">Inscription</a>
         </form>
     </div>
 </template>
@@ -25,7 +26,14 @@ export default {
         };
     },
     methods: {
-        
+        login() {
+            session.login(this.utilisateur, this.motDePasse).then(user => {
+                alert("Bienvenue, " + user.utilisateur + (user.admin ? ".\nVous êtes administrateur." : "."));
+                this.$router.push('/');
+            }).catch(authError => {
+                alert(authError.message);
+            })
+        }
     }
 }
 </script>
