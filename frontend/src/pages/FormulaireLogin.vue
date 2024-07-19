@@ -1,6 +1,6 @@
 <template>
     <div class="boxed-left">
-        <form>
+        <form @submit.prevent="login">
             <div>
                 <label for="utilisateur">Identifiant utilisateur:</label>
                 <input id="utilisateur" v-model="utilisateur">
