@@ -6,8 +6,7 @@
                 <router-link to="/">Accueil</router-link> 
             </div>
             <div class="session">
-                <div>Bonjour Bob Graton </div>
-                <div>Déconnection</div>
+                <router-link to="/login">Connextion</router-link>
             </div>
         </div>
     </header>
