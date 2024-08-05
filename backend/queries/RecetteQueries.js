@@ -4,8 +4,15 @@ exports.getImagePathForRecetteId = getImagePathForRecetteId;
 
 const getAllRecettes = async () => {
     const result = await pool.query(
-        `SELECT recette_id, name, description
+        `SELECT nom_recette, description_courte
         FROM recette
-        ORDER BY recette_id`
+        ORDER BY id_recette`
     );
-}
+    return result.rows.map(row => {
+        const recette = {
+            name: row.nom_recette,
+            desc: row.description_courte,
+        };
+    });
+};
+exports.getAllRecettes = getAllRecettes;

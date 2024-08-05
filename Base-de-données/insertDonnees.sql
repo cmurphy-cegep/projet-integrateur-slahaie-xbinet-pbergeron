@@ -29,7 +29,7 @@ Insert INTO Recettes (id_recette, nom_recette, description_courte,
  ('Oignon', 'oignon finement haché'),
  ('Tomates_conserve', 'tomates en dés'),
  ('Creme_cuisson', 'crème à cuisson'),
- ('Coriandre', 'Coriandre fraîche')
+ ('Coriandre', 'Coriandre fraîche'),
 
  INSERT INTO liste_ingredient (id_recette, id_ingrédients, quantite, mesure)
  VALUES ('Spaghetti_Carbonara', 'Spaghetti', 200, 'gramme'),
@@ -47,7 +47,7 @@ Insert INTO Recettes (id_recette, nom_recette, description_courte,
  ('Tikka_Masala', 'Tomates_conserve', 400, 'gramme'),
  ('Tikka_Masala', 'Creme_cuisson', 200, 'millilitres'),
  ('Tikka_Masala', 'Coriandre' null, null),
- ('Tikka_Masala', 'Ail', 2, null)
+ ('Tikka_Masala', 'Ail', 2, null),
 
  INSERT INTO etapes (id_etape, description, ordre_etape)
  VALUES ('1-Spaghetti_Carbonara', 'Faites cuire les spaghettis selon les instructions du paquet. Égouttez, en réservant une tasse d''eau de cuisson des pâtes.',
@@ -69,7 +69,7 @@ Insert INTO Recettes (id_recette, nom_recette, description_courte,
  ('4-Tikka_Masala', '4.	Ajoutez les tomates et laissez mijoter pendant 10 minutes. Incorporez la crème et remettez le poulet dans la poêle.',
  4),
  ('5-Tikka_Masala', '5.	Faites cuire encore 5 minutes. Garnissez de coriandre et servez avec du riz ou du naan.',
- 5)
+ 5),
 
  INSERT INTO liste_etapes (id_recette, id_etape)
  VALUES ('Spaghetti_Carbonara', '1-Spaghetti_Carbonara'),
