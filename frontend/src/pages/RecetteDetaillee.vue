@@ -1,0 +1,67 @@
+<template>
+    <h2>{{nom}}</h2>
+    <img src="" alt="image recette">
+    <p>Temps de préparation: {{ tempsDePrep }} minute</p>
+    <p>Temps de cuisson: {{ tempsDeCuit }}</p>
+    <p>Nombre de portion: {{ portion }}</p>
+    <p>{{ description }}</p>
+    <h3>ingredients</h3>
+    <Ingredient v-for="ingredient in ingredients" :nom=ingredient.nom :quantier=ingredient.quantier></Ingredient>
+    <h3>etapes</h3>
+    <etape v-for="(etape, id) in etapes" :numero="id+1" :description="etape.description"></etape>
+</template>
+
+<script>
+import Ingredient from '../components/Ingredient.vue';
+import Etape from '../components/Etape.vue';
+
+export default {
+    components: {
+        Ingredient,
+        Etape
+    },
+    data: function () {
+        return {
+            nom: '',
+            tempsDePrep: 0,
+            tempsDeCuit: 0,
+            portion: 0,
+            description: "",
+            ingredients: [],
+            etapes: []
+        }
+    },
+    methods: {
+        chargerRecette(recetteKey) {
+            fetch("/api/recettes/" + recetteKey)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        if (response.status === 404) {
+                            throw new Error("Recettes introuvable");
+                        }
+                        throw new Error("Erreur HTTP " + response.status);
+                    }
+                })
+                .then((recette) => {
+                    this.nom = recette.nom;
+                    this.tempsDePrep = recette.tempsDePrep;
+                    this.tempsDeCuit = recette.tempsDeCuit;
+                    this.portion = recette.portion;
+                    this.description = recette.description;
+                    this.ingredients = recette.ingredients;
+                    this.etapes = recette.etapes;
+                }).catch((error) => {
+                    console.log("Erreur", error);
+                });
+        }
+    },
+    mounted() {
+        this.chargerRecette(this.recetteKey);
+    },
+    props: {
+        recetteKey: String
+    },
+}
+</script>
