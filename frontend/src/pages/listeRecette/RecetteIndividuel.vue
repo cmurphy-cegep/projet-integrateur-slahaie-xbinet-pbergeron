@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { addApiPrefixToPath } from '../../../api_utils';
+import { addApiPrefixToPath } from '../../api_utils';
 
 export default {
     props: {
@@ -22,7 +22,7 @@ export default {
     },
     // On injecte le cart afin d'avoir accès à sa méthode addToCart
     computed: {
-        productDetailUrl() {
+        recetteDetailUrl() {
             return "/recette/" + this.id;
         },
         imageSrc() {

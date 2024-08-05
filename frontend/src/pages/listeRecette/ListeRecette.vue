@@ -1,6 +1,6 @@
 <template>
     <div id="recette-list">
-        <h2>Catalogue de produits</h2>
+        <h2>Liste de Recettes</h2>
         <LoadingSpinner :loading="loading" :error="loadError" />
         <RecetteIndividuel v-if="!loading" v-for="recette in recettes" :key="recette.id" :id="recette.id"
             :name="recette.name" :desc="recette.desc" :image="recette.image" />
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import LoadingSpinner from '../../../components/LoadingSpinner.vue';
+import LoadingSpinner from '../../components/LoadingSpinner.vue';
 import RecetteIndividuel from './RecetteIndividuel.vue';
 import { fetchRecette } from '../../RecetteService';
 
@@ -25,7 +25,7 @@ export default {
         };
     },
     mounted() {
-        fetchProducts().then(recettes => {
+        fetchRecette().then(recettes => {
             this.recettes = recettes;
             this.loading = false;
             this.loadError = false;
