@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.json({nom: "test"});
-  });
-
+const HttpError = require("../HttpError");
+const recetteQueries = require("../queries/RecetteQueries");
 
 let recettes = {
   nom: 'Spagettie',
@@ -42,5 +40,14 @@ router.get('/:id_recette', (req, res, next) => {
     const recette = req.params.id_recette;
     res.json(recettes);
 })
+
+router.get('/', (req, res, next) => {
+    recetteQueries.getAllRecette().then(recettes => {
+        res.json(recettes);
+    }).catch(err => {
+        return next(err);
+    });
+});
+
 
 module.exports = router;
