@@ -59,7 +59,7 @@ const session = reactive({
 
         if (response.ok) {
             const user = await response.json();
-            this.id_utilisateur = user;
+            this.id_utilisateur = user.idUser;
             return user;
         } else {
             this.id_utilisateur = null;
