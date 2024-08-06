@@ -23,5 +23,5 @@ jobs:
       - name: Build project
         if: success() || failure()
         run: |
-          cd backend
+          cd frontend
           npm run build
