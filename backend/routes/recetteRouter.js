@@ -40,7 +40,7 @@ router.get('/:id_recette', (req, res, next) => {
 })
 
 router.get('/', (req, res, next) => {
-    recetteQueries.getAllRecette().then(recettes => {
+    recetteQueries.getAllRecettes().then(recettes => {
         res.json(recettes);
     }).catch(err => {
         return next(err);

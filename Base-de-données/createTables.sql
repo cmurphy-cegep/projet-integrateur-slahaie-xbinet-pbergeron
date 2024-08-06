@@ -39,8 +39,8 @@ CREATE TABLE Commentaires(
    id_recette VARCHAR(250),
    id_utilisateurs VARCHAR(250),
    PRIMARY KEY(id_commentaire),
-   FOREIGN KEY(id_recette) REFERENCES Recettes(id_recette),
-   FOREIGN KEY(id_utilisateurs) REFERENCES Utilisateurs(id_utilisateurs)
+   FOREIGN KEY(id_recette) REFERENCES Recettes(id_recette) ON DELETE CASCADE,
+   FOREIGN KEY(id_utilisateurs) REFERENCES Utilisateurs(id_utilisateurs) ON DELETE CASCADE
 );
 
 CREATE TABLE liste_ingredient(
@@ -49,16 +49,16 @@ CREATE TABLE liste_ingredient(
    quantite DECIMAL(15,2),
    mesure VARCHAR(250),
    PRIMARY KEY(id_recette, id_ingrédients),
-   FOREIGN KEY(id_recette) REFERENCES Recettes(id_recette),
-   FOREIGN KEY(id_ingrédients) REFERENCES Ingrédients(id_ingrédients)
+   FOREIGN KEY(id_recette) REFERENCES Recettes(id_recette) ON DELETE CASCADE,
+   FOREIGN KEY(id_ingrédients) REFERENCES Ingrédients(id_ingrédients) ON DELETE CASCADE
 );
 
 CREATE TABLE liste_etapes(
    id_recette VARCHAR(250),
-   id_etape VARCHAR(250),
+   id_etape TEXT,
    PRIMARY KEY(id_recette, id_etape),
-   FOREIGN KEY(id_recette) REFERENCES Recettes(id_recette),
-   FOREIGN KEY(id_etape) REFERENCES etapes(id_etape)
+   FOREIGN KEY(id_recette) REFERENCES Recettes(id_recette) ON DELETE CASCADE,
+   FOREIGN KEY(id_etape) REFERENCES etapes(id_etape) ON DELETE CASCADE
 );
 
 CREATE TABLE Note(
@@ -66,6 +66,6 @@ CREATE TABLE Note(
    id_utilisateurs VARCHAR(250),
    note INT,
    PRIMARY KEY(id_recette, id_utilisateurs),
-   FOREIGN KEY(id_recette) REFERENCES Recettes(id_recette),
-   FOREIGN KEY(id_utilisateurs) REFERENCES Utilisateurs(id_utilisateurs)
+   FOREIGN KEY(id_recette) REFERENCES Recettes(id_recette) ON DELETE CASCADE,
+   FOREIGN KEY(id_utilisateurs) REFERENCES Utilisateurs(id_utilisateurs) ON DELETE CASCADE
 );
