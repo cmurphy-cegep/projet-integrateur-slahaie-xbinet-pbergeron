@@ -12,7 +12,7 @@ const router = createRouter({
     routes: [
         { path: '/', component: ListeRecette},
         { path: '/login', component: FormulaireLogin},
-        { path: '/recettes/:recetteKey', component: RecetteDetaillee, props: true}
+        { path: '/recette/:recetteKey', component: RecetteDetaillee, props: true}
     ]
 });
 

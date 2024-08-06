@@ -1,6 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
-
+const HttpError = require('./HttpError');
 const recetteRouter = require('./routes/recetteRouter');
 
 const app = express();
