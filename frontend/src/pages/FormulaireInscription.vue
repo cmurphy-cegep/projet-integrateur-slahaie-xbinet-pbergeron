@@ -1,7 +1,7 @@
 <template>
     <div>
         
-        <form>
+        <form @submit.prevent="inscription">
             <div>
                 <h2>Inscription</h2>
                 <div>
@@ -35,19 +35,16 @@ export default {
     },
     methods: {
         inscription() {
-            const user = {
-                id_utilisateur: this.utilisateur,
-                utilisateur: this.nom,
-                motDePasse: this.motDePasse
+            const userDetails = {
+                idUser: this.utilisateur,
+                user: this.nom,
+                password: this.motDePasse
             }
-
-            fetch("/api/inscription", {
-                method: "POST",
-                body: JSON.stringify(user)
-            }).then((response) => {
-                if (!response.ok) {
-                    throw new Error(`Erreur ${response.status}`)
-                }
+            session.inscription(userDetails).then(user => {
+                alert("Bienvenue, " + user.utilisateur + (user.admin ? ".\nVous êtes administrateur." : "."));
+                this.$router.push('/');
+            }).catch(authError => {
+                alert(authError.message);
             })
         }
     }

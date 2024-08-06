@@ -27,6 +27,12 @@ const session = reactive({
         this.setCredentials(id_utilisateur, motDePasse);
         return this.fetchUser();
     },
+
+    inscription(user) {
+        this.setCredentials(user.idUser, user.motDePasse);
+        return this.createUser(user);
+    },
+
     setCredentials(id_utilisateur, motDePasse) {
         this.id_utilisateur = id_utilisateur;
         sessionStorage.id_utilisateur = id_utilisateur;
@@ -64,6 +70,24 @@ const session = reactive({
             }
         }
     },
+    async createUser(user) {
+        const response = await fetch("/api/inscription", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        });
+
+        if (response.ok) {
+            const utilisateur = await response.json();
+            this.id_utilisateur = utilisateur.id_utilisateur;
+            return utilisateur;
+        } else {
+            throw new Error(response.status, "Erreur lors de la création de compte");
+        }
+    },
+
     getAuthHeaders() {
         if (this.utilisateur) {
             return {

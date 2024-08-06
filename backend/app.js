@@ -9,6 +9,7 @@ const BasicStrategy = require('passport-http').BasicStrategy;
 const crypto = require('crypto');
 
 const recetteRouter = require('./routes/recetteRouter');
+const utilisateurQueries = require("./queries/userAccountQueries");
 
 const app = express();
 
@@ -73,8 +74,27 @@ app.get('/login',
   }
 )
 
-app.post('/inscription',{
+app.post('/inscription', (req, res, next) => {
+  if (req.user) {
+    const id_user = req.body.id_utilisateur;
+    const user = req.body.nom;
+    const password = req.body.motDePasse;
+    const saltBuf = crypto.randomBytes(16);
+    const salt = saltBuf.toString("base64");
 
+    crypto.pbkdf2(password, salt, 100000, 64, "sha512", (err, derivedKey) => {
+      if (err) throw err;
+
+      const password_hash = derivedKey.toString("base64");
+      
+      utilisateurQueries.createUserAccount(id_user,user,password_hash,salt);
+
+      res.status(201).json({ message: "User account created successfully." });
+    }
+    
+);
+    
+  }
 }
 )
 
