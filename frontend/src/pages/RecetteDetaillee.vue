@@ -7,7 +7,7 @@
         <p>Nombre de portion: {{ portion }}</p>
     </div>
     <div>
-        <p>{{ description }}</p>
+        <p v-for="parag in description">{{ parag }}</p>
     </div>
     <div>
         <h3>Ingredients</h3>
@@ -63,7 +63,7 @@ export default {
                     this.tempsDePrep = recette.tempsDePrep;
                     this.tempsDeCuit = recette.tempsDeCuit;
                     this.portion = recette.portion;
-                    this.description = recette.description;
+                    this.description = recette.description.split('\n');
                     this.ingredients = recette.ingredients;
                     this.etapes = recette.etapes;
                 }).catch((error) => {

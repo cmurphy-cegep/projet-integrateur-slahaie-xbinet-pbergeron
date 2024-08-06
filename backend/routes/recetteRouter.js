@@ -25,7 +25,6 @@ router.get('/:id_recette', (req, res, next) => {
                 })
             })
             recetteQueries.getEtape(req.params.id_recette).then((rep) => {
-                console.log(rep);
                 rep.forEach((element) => {
                     return jsonObj.etapes.push({
                         description: element.description,
