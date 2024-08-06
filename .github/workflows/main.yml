@@ -18,7 +18,7 @@ jobs:
           npm install
       - name: Test
         run: |
-          cd backend
+          cd backend/test
           npm test
       - name: Build project
         run: |
