@@ -15,6 +15,6 @@ jobs:
       - name: Install dependencies
         run: npm --prefix ./backend install ./backend
       - name: Test
-        run: npm test
+        run: npm --prefix ./backend test ./backend
       - name: Build project
-        run: npm run build
+        run: npm --prefix ./backend run build ./backend
