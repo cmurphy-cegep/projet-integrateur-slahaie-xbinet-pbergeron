@@ -20,7 +20,7 @@ export default {
         };
     },
     mounted() {
-        fetchProducts().then(recettes => {
+        fetchRecette().then(recettes => {
             this.recettes = recettes;
             this.loading = false;
             this.loadError = false;

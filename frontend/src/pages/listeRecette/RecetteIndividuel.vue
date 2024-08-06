@@ -20,7 +20,6 @@ export default {
         desc: String,
         image: String
     },
-    // On injecte le cart afin d'avoir accès à sa méthode addToCart
     computed: {
         recetteDetailUrl() {
             return "/recette/" + this.id;
