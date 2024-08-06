@@ -23,13 +23,13 @@ const session = reactive({
             this.fetchUser().catch(err => console.error("L'authentification initiale a échouée: ", err));
         }
     },
-    login(utilisateur, motDePasse) {
-        this.setCredentials(utilisateur, motDePasse);
+    login(id_utilisateur, motDePasse) {
+        this.setCredentials(id_utilisateur, motDePasse);
         return this.fetchUser();
     },
-    setCredentials(utilisateur, motDePasse) {
-        this.utilisateur = utilisateur;
-        sessionStorage.utilisateur = utilisateur;
+    setCredentials(id_utilisateur, motDePasse) {
+        this.id_utilisateur = id_utilisateur;
+        sessionStorage.id_utilisateur = id_utilisateur;
         this.motDePasse = motDePasse;
         sessionStorage.motDePasse = motDePasse;
     },

@@ -61,9 +61,21 @@ app.get('/login',
   (req, res, next) => {
 
     if (req.user) {
-      
+      const userDetails = {
+        id_utilisateur: req.user.id_utilisateur,
+        nom: req.user.utilisateur,
+        admin: req.user.admin
+      };
+      res.json(userDetails)
+    } else {
+      return next({ status: 500, message: "propriété user absente"})
     }
   }
+)
+
+app.post('/inscription',{
+
+}
 )
 
 app.use((err, req, res, next) => {

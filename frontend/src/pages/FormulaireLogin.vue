@@ -11,7 +11,7 @@
                 <input type="password" id="motDePasse" v-model="motDePasse">
             </div>
             <button>Se connecter</button>
-            <a href="./FormulaireInscription.vue">Inscription</a>
+            <router-link to="/inscription">Inscription</router-link>
         </form>
     </div>
 </template>
