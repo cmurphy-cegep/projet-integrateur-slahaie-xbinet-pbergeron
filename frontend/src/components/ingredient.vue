@@ -1,6 +1,9 @@
 <template>
-    <div>
-        {{ nom }} : {{ quantier }}
+    <div v-if=quantier>
+        {{ nom }} : {{ quantier }} {{ mesure }}
+    </div>
+    <div v-else=quantier>
+        {{ nom }}
     </div>
 </template>
 
@@ -8,7 +11,8 @@
 export default {
     props: {
         nom: String,
-        quantier: String,
+        quantier: Number,
+        mesure: String
     }
 }
 </script>

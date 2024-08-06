@@ -1,15 +1,26 @@
 <template>
     <h2>{{nom}}</h2>
     <img src="" alt="image recette">
-    <p>Temps de préparation: {{ tempsDePrep }} minute</p>
-    <p>Temps de cuisson: {{ tempsDeCuit }}</p>
-    <p>Nombre de portion: {{ portion }}</p>
-    <p>{{ description }}</p>
-    <h3>ingredients</h3>
-    <Ingredient v-for="ingredient in ingredients" :nom=ingredient.nom :quantier=ingredient.quantier></Ingredient>
-    <h3>etapes</h3>
-    <Etape v-for="(etape, id) in etapes" :numero="id+1" :description="etape.description"></etape>
-    <Note :note = 2></Note>
+    <div>
+        <p>Temps de préparation: {{ tempsDePrep }} minute</p>
+        <p>Temps de cuisson: {{ tempsDeCuit }}</p>
+        <p>Nombre de portion: {{ portion }}</p>
+    </div>
+    <div>
+        <p v-for="parag in description">{{ parag }}</p>
+    </div>
+    <div>
+        <h3>Ingredients</h3>
+        <Ingredient v-for="ingredient in ingredients" :nom=ingredient.nom :quantier=ingredient.quantier :mesure=ingredient.mesure></Ingredient>
+    </div>
+    <div>
+        <h3>Etapes</h3>
+        <etape v-for="(etape) in etapes" :description="etape.description" :numero="etape.ordre_etape"></etape>
+    </div>
+    <div>
+        <Note :note = 2></Note>
+    </div>
+    
 </template>
 
 <script>
@@ -52,7 +63,7 @@ export default {
                     this.tempsDePrep = recette.tempsDePrep;
                     this.tempsDeCuit = recette.tempsDeCuit;
                     this.portion = recette.portion;
-                    this.description = recette.description;
+                    this.description = recette.description.split('\n');
                     this.ingredients = recette.ingredients;
                     this.etapes = recette.etapes;
                 }).catch((error) => {
@@ -68,3 +79,16 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+h2{
+    text-align: center;
+    font-size: 40px;
+}
+h3{
+    font-size: 24px;
+}
+div{
+    padding: 5px;
+}
+</style>
