@@ -1,5 +1,5 @@
 <template>
-    <p>Note : {{ note }}</p>
+    <p>Note : {{ note }} sur 5</p>
     <form action="">
         <input type="number" max="5" min="0">
         <button>Envoyer</button>
