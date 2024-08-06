@@ -10,14 +10,17 @@
         <p>{{ description }}</p>
     </div>
     <div>
-        <h3>ingredients</h3>
+        <h3>Ingredients</h3>
         <Ingredient v-for="ingredient in ingredients" :nom=ingredient.nom :quantier=ingredient.quantier :mesure=ingredient.mesure></Ingredient>
     </div>
     <div>
-        <h3>etapes</h3>
-        <etape v-for="(etape, id) in etapes" :numero="id+1" :description="etape.description"></etape>
+        <h3>Etapes</h3>
+        <etape v-for="(etape) in etapes" :description="etape.description" :numero="etape.ordre_etape"></etape>
     </div>
-    <Note :note = 2></Note>
+    <div>
+        <Note :note = 2></Note>
+    </div>
+    
 </template>
 
 <script>
