@@ -17,16 +17,19 @@
         <h3>etapes</h3>
         <etape v-for="(etape, id) in etapes" :numero="id+1" :description="etape.description"></etape>
     </div>
+    <Note :note = 2></Note>
 </template>
 
 <script>
 import Ingredient from '../components/Ingredient.vue';
 import Etape from '../components/Etape.vue';
+import Note from '../components/Note.vue';
 
 export default {
     components: {
         Ingredient,
-        Etape
+        Etape,
+        Note
     },
     data: function () {
         return {
