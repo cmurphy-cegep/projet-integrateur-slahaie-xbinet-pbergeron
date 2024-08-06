@@ -19,6 +19,7 @@ jobs:
       - name: Test
         run: |
           cd backend
+          cd test
           npm test
       - name: Build project
         run: |
