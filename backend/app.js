@@ -1,11 +1,9 @@
 const express = require('express');
 const logger = require('morgan');
-const HttpError = require('./HttpError');
 
-const recettesRouter = require('./routes/recettesRouter');
+const recetteRouter = require('./routes/recetteRouter');
 
 const app = express();
-const recetteRouter = require('./routes/recetteRouter');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -23,7 +21,5 @@ app.use((err, req, res, next) => {
     res.json(err);
   }
 });
-
-app.use('/recettes', recettesRouter);
 
 module.exports = app;
