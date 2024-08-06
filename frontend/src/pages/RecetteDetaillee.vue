@@ -1,14 +1,22 @@
 <template>
     <h2>{{nom}}</h2>
     <img src="" alt="image recette">
-    <p>Temps de préparation: {{ tempsDePrep }} minute</p>
-    <p>Temps de cuisson: {{ tempsDeCuit }}</p>
-    <p>Nombre de portion: {{ portion }}</p>
-    <p>{{ description }}</p>
-    <h3>ingredients</h3>
-    <Ingredient v-for="ingredient in ingredients" :nom=ingredient.nom :quantier=ingredient.quantier></Ingredient>
-    <h3>etapes</h3>
-    <etape v-for="(etape, id) in etapes" :numero="id+1" :description="etape.description"></etape>
+    <div>
+        <p>Temps de préparation: {{ tempsDePrep }} minute</p>
+        <p>Temps de cuisson: {{ tempsDeCuit }}</p>
+        <p>Nombre de portion: {{ portion }}</p>
+    </div>
+    <div>
+        <p>{{ description }}</p>
+    </div>
+    <div>
+        <h3>ingredients</h3>
+        <Ingredient v-for="ingredient in ingredients" :nom=ingredient.nom :quantier=ingredient.quantier :mesure=ingredient.mesure></Ingredient>
+    </div>
+    <div>
+        <h3>etapes</h3>
+        <etape v-for="(etape, id) in etapes" :numero="id+1" :description="etape.description"></etape>
+    </div>
 </template>
 
 <script>
@@ -65,3 +73,16 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+h2{
+    text-align: center;
+    font-size: 40px;
+}
+h3{
+    font-size: 24px;
+}
+div{
+    padding: 5px;
+}
+</style>
