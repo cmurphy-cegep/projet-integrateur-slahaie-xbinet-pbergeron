@@ -78,7 +78,6 @@ app.get('/login',
 
 app.post('/inscription', (req, res, next) => {
   const utilisateur = req.body
-  console.log(utilisateur);
   if (utilisateur) {
     const id_user = req.body.id_utilisateur;
     const user = req.body.nom;
