@@ -28,13 +28,19 @@ export default {
     },
     methods: {
         login() {
-            session.login(this.utilisateur, this.motDePasse).then(user => {
+
+            if (!this.utilisateur || !this.motDePasse) {
+                alert("Veuillez entrer un nom d'utilisateur ou un mot de passe valide.");
+            } else {
+                session.login(this.utilisateur, this.motDePasse).then(user => {
                 console.log(user.admin);
                 alert("Bienvenue, " + user.id_utilisateur + ".");
                 this.$router.push('/');
             }).catch(authError => {
                 alert(authError.message);
             })
+            }
+            
         }
     }
 }

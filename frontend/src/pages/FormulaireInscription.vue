@@ -2,7 +2,7 @@
     <div>
         
         <form @submit.prevent="inscription">
-            <div>
+            <div class="boxed-left">
                 <h2>Inscription</h2>
                 <div>
                 <label for="utilisateur">Identifiant utilisateur:</label>
@@ -15,6 +15,10 @@
             <div>
                 <label for="motDePasse">Mot de passe:</label>
                 <input type="password" id="motDePasse" v-model="motDePasse">
+            </div>
+            <div>
+                <label for="motDePasse">Confirmer le Mot de passe:</label>
+                <input type="password" id="motDePasse" v-model="motDePassevérifié">
             </div>
             <button>S'inscrire</button>
             </div>
@@ -30,12 +34,18 @@ export default {
         return {
             utilisateur: '',
             nom: '',
-            motDePasse: ''
+            motDePasse: '',
+            motDePassevérifié: ''
         };
     },
     methods: {
         inscription() {
-            const userDetails = {
+            if (!this.utilisateur || !this.nom || !this.motDePasse || !this.motDePassevérifié) {
+                alert("Veuillez remplir les champs ci-dessous");
+            } else if (this.motDePasse != this.motDePassevérifié) {
+                alert("Votre mot de passe doit être le même pour les deux champs.");
+            } else {
+                const userDetails = {
                 id_utilisateur: this.utilisateur,
                 nom: this.nom,
                 motDePasse: this.motDePasse
@@ -46,7 +56,25 @@ export default {
             }).catch(authError => {
                 alert(authError.message);
             })
+            }
+            
         }
     }
 }
 </script>
+
+<style scoped>
+form * {
+    margin: 0.3rem;
+}
+
+.boxed-left {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    margin: 1rem auto;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: left;
+    width: 90%;
+    max-width: 80rem;
+}
+</style>

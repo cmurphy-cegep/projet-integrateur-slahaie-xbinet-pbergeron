@@ -86,6 +86,10 @@ app.post('/inscription', (req, res, next) => {
     const saltBuf = crypto.randomBytes(16);
     const salt = saltBuf.toString("base64");
 
+    if (utilisateurQueries.getUserAccount(id_user)) {
+      return next({ status: 500, message: "propriété user absente"})
+    }
+
     crypto.pbkdf2(password, salt, 100000, 64, "sha512", (err, derivedKey) => {
       if (err) throw err;
 
