@@ -2,7 +2,7 @@ const pool = require('./DBPool');
 
 const getLoginByUserAccountId = async (userAccountId) => {
     const result = await pool.query(
-        `SELECT id_utilisateurs, nom_utilisateur, password_hash, password_salt, admin
+        `SELECT id_utilisateurs, password_hash, password_salt, admin
          FROM utilisateurs
          WHERE id_utilisateurs = $1`,
         [userAccountId]
@@ -11,11 +11,10 @@ const getLoginByUserAccountId = async (userAccountId) => {
     const row = result.rows[0];
     if (row) {
         return {
-            id_utilisateur: row.id_utilisateur,
-            nom_utilisateur: row.nom_utilisateur,
-            passwordHash: row.password_hash,
-            passwordSalt: row.password_salt,
-            isAdmin: row.is_admin
+            id_utilisateur: row.id_utilisateurs,
+            password_hash: row.password_hash,
+            password_salt: row.password_salt,
+            admin: row.admin
         };
     }
     return undefined;
@@ -23,7 +22,7 @@ const getLoginByUserAccountId = async (userAccountId) => {
 exports.getLoginByUserAccountId = getLoginByUserAccountId;
 
 const getUserAccount = async (userId) => {
-    const result = await (client || pool).query(
+    const result = await pool.query(
         `SELECT id_utilisateurs, nom_utilisateur, admin 
         FROM utilisateurs
         WHERE
@@ -47,7 +46,7 @@ exports.getUserAccount = getUserAccount;
 
 const createUserAccount = async (idUser, user, password_hash, password_salt) => {
 
-    const result = await (client || pool).query(
+    const result = await pool.query(
         `INSERT INTO utilisateurs (id_utilisateurs, nom_utilisateur, 
         password_hash, password_salt, admin) 
         VALUES ($1, $2, $3, $4, $5)`,

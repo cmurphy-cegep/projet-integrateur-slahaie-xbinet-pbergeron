@@ -29,7 +29,8 @@ export default {
     methods: {
         login() {
             session.login(this.utilisateur, this.motDePasse).then(user => {
-                alert("Bienvenue, " + user.utilisateur + (user.admin ? ".\nVous êtes administrateur." : "."));
+                console.log(user.admin);
+                alert("Bienvenue, " + user.id_utilisateur + ".");
                 this.$router.push('/');
             }).catch(authError => {
                 alert(authError.message);

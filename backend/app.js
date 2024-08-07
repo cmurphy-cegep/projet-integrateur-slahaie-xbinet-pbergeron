@@ -16,6 +16,7 @@ const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/recettes', recetteRouter)
 
 class BasicStrategyModified extends BasicStrategy {
@@ -30,6 +31,7 @@ class BasicStrategyModified extends BasicStrategy {
 
 passport.use(new BasicStrategyModified((id_utilisateur, motDePasse, authResult) => {
   utilisateurQueries.getLoginByUserAccountId(id_utilisateur).then(utilisateur => {
+    console.log(utilisateur.id_utilisateurs);
     if (!utilisateur) {
       return authResult(null,false);
     }
@@ -38,13 +40,13 @@ passport.use(new BasicStrategyModified((id_utilisateur, motDePasse, authResult) 
     const keylen = 64;
     const digest = "sha512";
 
-    crypto.pbkdf2(motDePasse, utilisateur.motDePasseSalt, iterations, keylen, digest, (err, hashedPassword) => {
+    crypto.pbkdf2(motDePasse, utilisateur.password_salt, iterations, keylen, digest, (err, hashedPassword) => {
 
       if (err) {
         return authResult(err);
       }
 
-      const userMdpHashBuffer = Buffer.from(utilisateur.motDePasseHash, "base64");
+      const userMdpHashBuffer = Buffer.from(utilisateur.password_hash, "base64");
 
       if (!crypto.timingSafeEqual(userMdpHashBuffer, hashedPassword)) {
         return authResult(null,false);
@@ -63,8 +65,8 @@ app.get('/login',
 
     if (req.user) {
       const userDetails = {
-        id_utilisateur: req.user.id_utilisateur,
-        nom: req.user.utilisateur,
+        id_utilisateur: req.user.id_utilisateurs,
+        nom: req.user.nom_utilisateur,
         admin: req.user.admin
       };
       res.json(userDetails)
@@ -75,7 +77,9 @@ app.get('/login',
 )
 
 app.post('/inscription', (req, res, next) => {
-  if (req.user) {
+  const utilisateur = req.body
+  console.log(utilisateur);
+  if (utilisateur) {
     const id_user = req.body.id_utilisateur;
     const user = req.body.nom;
     const password = req.body.motDePasse;

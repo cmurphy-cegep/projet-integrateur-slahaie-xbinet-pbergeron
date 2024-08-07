@@ -40,7 +40,7 @@ const session = reactive({
         sessionStorage.motDePasse = motDePasse;
     },
     clearCredentials() {
-        this.utilisateur = null;
+        this.id_utilisateur = null;
         sessionStorage.removeItem('utilisateur');
         this.motDePasse = null;
         sessionStorage.removeItem('motDePasse');
@@ -59,8 +59,11 @@ const session = reactive({
 
         if (response.ok) {
             const user = await response.json();
-            this.id_utilisateur = user.idUser;
-            return user;
+            const utilisateur = {
+                id_utilisateur: this.id_utilisateur,
+                admin: user
+            }
+            return utilisateur;
         } else {
             this.id_utilisateur = null;
             if (response.status === 401) {
@@ -80,8 +83,11 @@ const session = reactive({
         });
 
         if (response.ok) {
-            const utilisateur = await response.json();
-            this.id_utilisateur = utilisateur.id_utilisateur;
+            const user = await response.json();
+            const utilisateur = {
+                id_utilisateur: this.id_utilisateur,
+                admin: user
+            }
             return utilisateur;
         } else {
             throw new Error(response.status, "Erreur lors de la création de compte");
@@ -89,9 +95,9 @@ const session = reactive({
     },
 
     getAuthHeaders() {
-        if (this.utilisateur) {
+        if (this.id_utilisateur) {
             return {
-                "Authorization": "Basic " + btoa(this.utilisateur + ":" + this.motDePasse),
+                "Authorization": "Basic " + btoa(this.id_utilisateur + ":" + this.motDePasse),
                 "X-Requested-With": "XMLHttpRequest"
             }
         } else {

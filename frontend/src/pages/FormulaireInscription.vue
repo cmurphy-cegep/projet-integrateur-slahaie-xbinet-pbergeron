@@ -36,12 +36,12 @@ export default {
     methods: {
         inscription() {
             const userDetails = {
-                idUser: this.utilisateur,
-                user: this.nom,
-                password: this.motDePasse
+                id_utilisateur: this.utilisateur,
+                nom: this.nom,
+                motDePasse: this.motDePasse
             }
             session.inscription(userDetails).then(user => {
-                alert("Bienvenue, " + user.utilisateur + (user.admin ? ".\nVous êtes administrateur." : "."));
+                alert("Bienvenue, " + user.id_utilisateurutilisateur + ".");
                 this.$router.push('/');
             }).catch(authError => {
                 alert(authError.message);

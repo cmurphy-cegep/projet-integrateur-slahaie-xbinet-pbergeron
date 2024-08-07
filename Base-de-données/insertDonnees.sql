@@ -3,6 +3,7 @@ DELETE FROM ingrédients;
 DELETE FROM liste_ingredient;
 DELETE FROM etapes;
 DELETE FROM liste_etapes;
+DELETE FROM utilisateurs;
 
 Insert INTO Recettes (id_recette, nom_recette, description_courte,
  description, temps_preparation, temps_cuisson, nb_portions, image)
@@ -305,4 +306,10 @@ Insert INTO Recettes (id_recette, nom_recette, description_courte,
  ('crèpe_yogourt', '2-crèpe_yogourt'),
  ('crèpe_yogourt', '3-crèpe_yogourt'),
  ('crèpe_yogourt', '4-crèpe_yogourt');
+
+ INSERT INTO utilisateurs (id_utilisateurs, nom_utilisateur, password_hash, password_salt, admin)
+ VALUES ('admin', 'admin', 'ukokHmbBGOnibmWklbgCnPfHjaIujFGvM6Rp8zhjQ+WPoLdkyzYrw/g6FN14wLQHWcMD6qW0cRuycyBWIKH7EQ==',
+ '7juvH7yAXDRxpHzakmJSXg==', true),
+ ('patate25', 'Bob Gratton', 'alpfSi7SgIWTS3FHGgmrC7kej3Uq7x+2eEbd4CbuZl8VNGHFDaewNXnHQ2MKgc2AokeNsurYE8p7UDTtppuiaw==',
+ 'JwVATh3rRC3VnXzNo0/0ZA==', false);
 
