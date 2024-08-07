@@ -97,9 +97,9 @@ app.post('/inscription', (req, res, next) => {
   
         const password_hash = derivedKey.toString("base64");
         
-        utilisateurQueries.createUserAccount(id_user,user,password_hash,salt);
+        const userReturn = utilisateurQueries.createUserAccount(id_user,user,password_hash,salt);
   
-        res.status(201).json({ message: "User account created successfully." });
+        res.json(userReturn);
       }
       
   );

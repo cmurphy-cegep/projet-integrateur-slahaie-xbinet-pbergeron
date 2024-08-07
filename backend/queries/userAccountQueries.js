@@ -31,12 +31,13 @@ const getUserAccount = async (userId) => {
     );
 
     const row = result.rows[0];
+    console.log(rows[0]);
 
     if (row) {
         return {
-            userId: row.user_account_id,
-            name: row.user_full_name,
-            isAdmin: row.is_admin
+            id_utilisateur: row.id_utilisateurs,
+            nom: row.nom_utilisateur,
+            admin: row.admin
         };
     }
 

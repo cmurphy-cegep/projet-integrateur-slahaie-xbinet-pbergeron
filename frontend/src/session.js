@@ -11,6 +11,7 @@ const session = reactive({
     id_utilisateur: null,
     utilisateur: null,
     motDePasse: null,
+    admin: null,
 
     initialize() {
         if (sessionStorage.utilisateur) {
@@ -59,9 +60,10 @@ const session = reactive({
 
         if (response.ok) {
             const user = await response.json();
+            this.admin = false;
             const utilisateur = {
                 id_utilisateur: this.id_utilisateur,
-                admin: user
+                admin: false
             }
             return utilisateur;
         } else {
@@ -84,6 +86,7 @@ const session = reactive({
 
         if (response.ok) {
             const user = await response.json();
+            console.log(response);
             const utilisateur = {
                 id_utilisateur: this.id_utilisateur,
                 admin: user
