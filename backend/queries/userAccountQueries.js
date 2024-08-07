@@ -46,16 +46,13 @@ exports.getUserAccount = getUserAccount;
 
 const createUserAccount = async (idUser, user, password_hash, password_salt) => {
 
-        const result = await pool.query(
-            `INSERT INTO utilisateurs (id_utilisateurs, nom_utilisateur, 
-            password_hash, password_salt, admin) 
-            VALUES ($1, $2, $3, $4, $5)`,
-            [idUser, user, password_hash, password_salt, false]
-        );
-    
-        return getUserAccount(idUser);
-    
+    const result = await pool.query(
+        `INSERT INTO utilisateurs (id_utilisateurs, nom_utilisateur, 
+        password_hash, password_salt, admin) 
+        VALUES ($1, $2, $3, $4, $5)`,
+        [idUser, user, password_hash, password_salt, false]
+    );
 
-    
+    return getUserAccount(idUser);
 };
 exports.createUserAccount = createUserAccount;

@@ -85,24 +85,29 @@ app.post('/inscription', (req, res, next) => {
     const saltBuf = crypto.randomBytes(16);
     const salt = saltBuf.toString("base64");
 
-    if (utilisateurQueries.getUserAccount(id_user)) {
-      return next({ status: 500, message: "propriété user absente"})
+    const verif = utilisateurQueries.getUserAccount(id_user);
+
+    if (id_user == verif.userId) {
+      return next({ status: 500, message: "compte existant"})
     }
 
-    crypto.pbkdf2(password, salt, 100000, 64, "sha512", (err, derivedKey) => {
-      if (err) throw err;
-
-      const password_hash = derivedKey.toString("base64");
-      
-      utilisateurQueries.createUserAccount(id_user,user,password_hash,salt);
-
-      res.status(201).json({ message: "User account created successfully." });
-    }
     
-);
+      crypto.pbkdf2(password, salt, 100000, 64, "sha512", (err, derivedKey) => {
+        if (err) throw err;
+  
+        const password_hash = derivedKey.toString("base64");
+        
+        utilisateurQueries.createUserAccount(id_user,user,password_hash,salt);
+  
+        res.status(201).json({ message: "User account created successfully." });
+      }
+      
+  );
+    }
+
+    
     
   }
-}
 )
 
 app.use((err, req, res, next) => {

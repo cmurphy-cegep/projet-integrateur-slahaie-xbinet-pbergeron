@@ -51,7 +51,7 @@ export default {
                 motDePasse: this.motDePasse
             }
             session.inscription(userDetails).then(user => {
-                alert("Bienvenue, " + user.id_utilisateurutilisateur + ".");
+                alert("Bienvenue, " + this.utilisateur + ".");
                 this.$router.push('/');
             }).catch(authError => {
                 alert(authError.message);
