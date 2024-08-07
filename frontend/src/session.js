@@ -11,6 +11,7 @@ const session = reactive({
     id_utilisateur: null,
     utilisateur: null,
     motDePasse: null,
+    admin: null,
 
     initialize() {
         if (sessionStorage.utilisateur) {
@@ -23,18 +24,24 @@ const session = reactive({
             this.fetchUser().catch(err => console.error("L'authentification initiale a échouée: ", err));
         }
     },
-    login(utilisateur, motDePasse) {
-        this.setCredentials(utilisateur, motDePasse);
+    login(id_utilisateur, motDePasse) {
+        this.setCredentials(id_utilisateur, motDePasse);
         return this.fetchUser();
     },
-    setCredentials(utilisateur, motDePasse) {
-        this.utilisateur = utilisateur;
-        sessionStorage.utilisateur = utilisateur;
+
+    inscription(user) {
+        this.setCredentials(user.idUser, user.motDePasse);
+        return this.createUser(user);
+    },
+
+    setCredentials(id_utilisateur, motDePasse) {
+        this.id_utilisateur = id_utilisateur;
+        sessionStorage.id_utilisateur = id_utilisateur;
         this.motDePasse = motDePasse;
         sessionStorage.motDePasse = motDePasse;
     },
     clearCredentials() {
-        this.utilisateur = null;
+        this.id_utilisateur = null;
         sessionStorage.removeItem('utilisateur');
         this.motDePasse = null;
         sessionStorage.removeItem('motDePasse');
@@ -53,8 +60,12 @@ const session = reactive({
 
         if (response.ok) {
             const user = await response.json();
-            this.id_utilisateur = user;
-            return user;
+            this.admin = false;
+            const utilisateur = {
+                id_utilisateur: this.id_utilisateur,
+                admin: false
+            }
+            return utilisateur;
         } else {
             this.id_utilisateur = null;
             if (response.status === 401) {
@@ -64,10 +75,32 @@ const session = reactive({
             }
         }
     },
+    async createUser(user) {
+        const response = await fetch("/api/inscription", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        });
+
+        if (response.ok) {
+            const user = await response.json();
+            console.log(response);
+            const utilisateur = {
+                id_utilisateur: this.id_utilisateur,
+                admin: user
+            }
+            return utilisateur;
+        } else {
+            throw new Error(response.status, "Erreur lors de la création de compte");
+        }
+    },
+
     getAuthHeaders() {
-        if (this.utilisateur) {
+        if (this.id_utilisateur) {
             return {
-                "Authorization": "Basic " + btoa(this.utilisateur + ":" + this.motDePasse),
+                "Authorization": "Basic " + btoa(this.id_utilisateur + ":" + this.motDePasse),
                 "X-Requested-With": "XMLHttpRequest"
             }
         } else {

@@ -1,6 +1,7 @@
 <template>
     <div class="boxed-left">
-        <form>
+        <h2>Connexion</h2>
+        <form @submit.prevent="login">
             <div>
                 <label for="utilisateur">Identifiant utilisateur:</label>
                 <input id="utilisateur" v-model="utilisateur">
@@ -10,7 +11,7 @@
                 <input type="password" id="motDePasse" v-model="motDePasse">
             </div>
             <button>Se connecter</button>
-            <a href="">Inscription</a>
+            <router-link to="/inscription">Inscription</router-link>
         </form>
     </div>
 </template>
@@ -27,12 +28,19 @@ export default {
     },
     methods: {
         login() {
-            session.login(this.utilisateur, this.motDePasse).then(user => {
-                alert("Bienvenue, " + user.utilisateur + (user.admin ? ".\nVous êtes administrateur." : "."));
+
+            if (!this.utilisateur || !this.motDePasse) {
+                alert("Veuillez entrer un nom d'utilisateur ou un mot de passe valide.");
+            } else {
+                session.login(this.utilisateur, this.motDePasse).then(user => {
+                console.log(user.admin);
+                alert("Bienvenue, " + user.id_utilisateur + ".");
                 this.$router.push('/');
             }).catch(authError => {
                 alert(authError.message);
             })
+            }
+            
         }
     }
 }
