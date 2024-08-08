@@ -1,6 +1,6 @@
 <template>
     <div class="recette">
-        <img v-bind:src="imageSrc" />
+        <img v-bind:src= "imageSrc"/>
         <div class="recette-info">
             <div class="recette-name">
                 <router-link :to="recetteDetailUrl">{{ name }}</router-link>
@@ -25,7 +25,7 @@ export default {
             return "/recette/" + this.id;
         },
         imageSrc() {
-            return addApiPrefixToPath(this.image);
+            return addApiPrefixToPath("/recettes/"+this.image);
         }
     }
 }
