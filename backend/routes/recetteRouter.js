@@ -26,16 +26,16 @@ router.get('/:id_recette', (req, res, next) => {
         recetteQueries.getIngredient(req.params.id_recette).then((rep) => {
             rep.forEach((element) => {
                 return jsonObj.ingredients.push({
-                    nom: element.id_ingrédients,
+                    nom: element.nom_ingredient,
                     quantier: element.quantite,
                     mesure: element.mesure
                 })
             })
             recetteQueries.getEtape(req.params.id_recette).then((rep) => {
-                console.log(rep);
                 rep.forEach((element) => {
                     return jsonObj.etapes.push({
-                        description: element.description
+                        description: element.description,
+                        ordre_etape: element.ordre_etape
                     })
                 })
                 res.json(jsonObj)

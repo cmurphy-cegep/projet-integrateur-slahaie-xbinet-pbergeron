@@ -1,0 +1,27 @@
+name: pipeline CI
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  Test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: |
+          cd backend 
+          npm install
+      - name: Test
+        run: |
+          cd backend
+          npm test
+      - name: Build project
+        if: success() || failure()
+        run: |
+          cd frontend
+          npm run build
