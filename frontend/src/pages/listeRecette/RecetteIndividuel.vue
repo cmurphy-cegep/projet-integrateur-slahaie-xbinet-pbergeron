@@ -22,7 +22,7 @@ export default {
     },
     computed: {
         recetteDetailUrl() {
-            return "/recette/" + this.id;
+            return "/recettes/" + this.id;
         },
         imageSrc() {
             return addApiPrefixToPath("/recettes/"+this.image);
