@@ -48,6 +48,7 @@ const session = reactive({
     },
     disconnect() {
         this.id_utilisateur = null;
+        this.admin = null;
         this.clearCredentials();
     },
     async fetchUser() {
@@ -60,10 +61,10 @@ const session = reactive({
 
         if (response.ok) {
             const user = await response.json();
-            this.admin = false;
+            this.admin = user.admin;
             const utilisateur = {
                 id_utilisateur: this.id_utilisateur,
-                admin: false
+                admin: this.admin
             }
             return utilisateur;
         } else {

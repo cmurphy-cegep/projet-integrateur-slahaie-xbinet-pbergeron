@@ -31,7 +31,6 @@ const getUserAccount = async (userId) => {
     );
 
     const row = result.rows[0];
-    console.log(rows[0]);
 
     if (row) {
         return {
