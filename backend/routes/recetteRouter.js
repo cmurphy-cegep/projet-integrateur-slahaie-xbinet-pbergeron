@@ -15,6 +15,7 @@ router.get('/:id_recette', (req, res, next) => {
     recetteQueries.getRecette(req.params.id_recette).then(recettes => {
         return {
             nom: recettes.nom_recette,
+            image: '/images/' + recettes.image,
             tempsDePrep: recettes.temps_preparation,
             tempsDeCuit: recettes.temps_cuisson,
             portion: recettes.nb_portions,

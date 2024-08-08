@@ -1,11 +1,14 @@
 <template>
     <h2>{{nom}}</h2>
-    <img src="" alt="image recette">
-    <div>
-        <p>Temps de préparation: {{ tempsDePrep }} minute</p>
-        <p>Temps de cuisson: {{ tempsDeCuit }}</p>
-        <p>Nombre de portion: {{ portion }}</p>
+    <div class="infoGeneral">
+        <img v-bind:src= "imageSrc"/>
+        <div>
+            <p>Temps de préparation: {{ tempsDePrep }} minute</p>
+            <p>Temps de cuisson: {{ tempsDeCuit }}</p>
+            <p>Nombre de portion: {{ portion }}</p>
+        </div>
     </div>
+    
     <div>
         <p v-for="parag in description">{{ parag }}</p>
     </div>
@@ -27,6 +30,7 @@
 import Ingredient from '../components/Ingredient.vue';
 import Etape from '../components/Etape.vue';
 import Note from '../components/Note.vue';
+import { addApiPrefixToPath } from '../api_utils';
 
 export default {
     components: {
@@ -37,6 +41,7 @@ export default {
     data: function () {
         return {
             nom: '',
+            image: '',
             tempsDePrep: 0,
             tempsDeCuit: 0,
             portion: 0,
@@ -60,6 +65,7 @@ export default {
                 })
                 .then((recette) => {
                     this.nom = recette.nom;
+                    this.image = recette.image;
                     this.tempsDePrep = recette.tempsDePrep;
                     this.tempsDeCuit = recette.tempsDeCuit;
                     this.portion = recette.portion;
@@ -77,6 +83,11 @@ export default {
     props: {
         recetteKey: String
     },
+    computed: {
+        imageSrc() {
+            return addApiPrefixToPath("/recettes/"+this.image);
+        }
+    }
 }
 </script>
 
@@ -84,6 +95,14 @@ export default {
 h2{
     text-align: center;
     font-size: 40px;
+}
+img{
+    width: 30%;
+    padding: 10px;
+}
+.infoGeneral{
+    display: flex;
+    align-items: center;
 }
 h3{
     font-size: 24px;

@@ -22,7 +22,7 @@ export default {
     },
     computed: {
         recetteDetailUrl() {
-            return "/recette/" + this.id;
+            return "/recettes/" + this.id;
         },
         imageSrc() {
             return addApiPrefixToPath("/recettes/"+this.image);
@@ -32,6 +32,16 @@ export default {
 </script>
 
 <style scoped>
+
+.recette{
+    display: flex;
+}
+
+img {
+    margin-right: 10px;
+    width: 100px;
+}
+
 .product {
     margin-bottom: 20px;
     border: 1px solid black;
