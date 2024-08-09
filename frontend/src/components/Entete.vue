@@ -2,7 +2,7 @@
     <header>
         <div>
             <div class="container">
-                <h1>Rodrigo</h1>
+                <h1>Les Recettes de Rodrigo</h1>
                 <div v-if="session.admin">administrateur</div>
                 <div class="name" v-if="session.id_utilisateur"> {{ session.id_utilisateur }}</div>
             </div>

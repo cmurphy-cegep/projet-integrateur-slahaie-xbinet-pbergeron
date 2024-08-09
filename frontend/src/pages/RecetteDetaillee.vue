@@ -4,7 +4,7 @@
         <img v-bind:src= "imageSrc"/>
         <div>
             <p>Temps de préparation: {{ tempsDePrep }} minute</p>
-            <p>Temps de cuisson: {{ tempsDeCuit }}</p>
+            <p>Temps de cuisson: {{ tempsDeCuit }} minute</p>
             <p>Nombre de portion: {{ portion }}</p>
         </div>
     </div>
