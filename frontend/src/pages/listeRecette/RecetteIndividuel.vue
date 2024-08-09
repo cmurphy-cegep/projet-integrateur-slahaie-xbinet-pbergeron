@@ -32,6 +32,14 @@ export default {
 </script>
 
 <style scoped>
+.recette {
+    margin-bottom: 20px;
+    border: 1px solid black;
+    padding: 10px;
+    overflow: hidden;
+    clear: both;
+    display: flex;
+}
 
 .recette{
     display: flex;

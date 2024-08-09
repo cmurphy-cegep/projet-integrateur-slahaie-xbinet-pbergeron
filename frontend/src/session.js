@@ -45,9 +45,11 @@ const session = reactive({
     },
     clearCredentials() {
         this.id_utilisateur = null;
-        sessionStorage.removeItem('utilisateur');
+        sessionStorage.removeItem('id_utilisateur');
         this.motDePasse = null;
         sessionStorage.removeItem('motDePasse');
+        this.admin = null;
+        sessionStorage.removeItem('admin');
     },
     disconnect() {
         this.id_utilisateur = null;
@@ -72,11 +74,18 @@ const session = reactive({
             sessionStorage.admin = this.admin;
             return utilisateur;
         } else {
+            this.clearCredentials();
             this.id_utilisateur = null;
+            this.admin = null;
+            this.motDePasse = null;
             if (response.status === 401) {
                 throw new AuthError(response.status, "Nom d'utilisateur ou mot de passe incorrect");
             } else {
-                throw new AuthError(response.status, "Erreur lors de l'authentification: " + response.status);
+                this.clearCredentials();
+                this.id_utilisateur = null;
+                this.admin = null;
+                this.motDePasse = null;
+                throw new AuthError(response.status, "Erreur lors de l'authentification");
             }
         }
     },

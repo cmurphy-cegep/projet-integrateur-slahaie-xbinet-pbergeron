@@ -10,6 +10,7 @@ const crypto = require('crypto');
 
 const recetteRouter = require('./routes/recetteRouter');
 const utilisateurQueries = require("./queries/userAccountQueries");
+const noteRouter = require("./routes/noteRouter");
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/recettes', recetteRouter)
+app.use('/recettes', recetteRouter);
 
 class BasicStrategyModified extends BasicStrategy {
   constructor(options, verify) {

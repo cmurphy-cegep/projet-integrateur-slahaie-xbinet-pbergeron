@@ -39,10 +39,5 @@ export default {
 </script>
 
 <style scoped>
-#product-list {
-    flex-basis: 70%;
-    margin-right: 20px;
-    border: 1px solid black;
-    padding: 10px;
-}
+
 </style>

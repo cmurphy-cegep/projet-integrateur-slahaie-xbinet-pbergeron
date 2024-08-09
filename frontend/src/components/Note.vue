@@ -1,6 +1,5 @@
 <template>
-    <p v-if="note == undefined">Aucune note disponible</p>
-    <p v-else>Note : {{ note }}</p>
+    <p>Note : {{ this.note }}</p>
         <form @submit.prevent="envoyerNote(recetteKey)">
         <input type="number" max="5" min="0" v-model="this.note_send">
         <button>Envoyer</button>
@@ -12,7 +11,7 @@ import session from '../session';
 export default {
     data: function () {
         return {
-            note: undefined,
+            note: 0,
             note_send: ''
         }
     },
