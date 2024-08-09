@@ -22,3 +22,18 @@ describe("Fetching notes", function () {
         expect(moyenneRating).toEqual(3);
     });
 });
+
+describe("Sending notes", function () {
+
+    test("Checks if user already has sent note", function () {
+        let rating = ["Spaghetti_Carbonara","Alice",2];
+        let result = noteQueries.noteCheck(rating);
+        expect(result).toBe(true || false);
+    });
+
+    test("Checks if user is connected", function () {
+        let user = "Patate25";
+        let result = noteQueries.userVerification(user);
+        expect(result).toBe(true || false);
+    });
+})
