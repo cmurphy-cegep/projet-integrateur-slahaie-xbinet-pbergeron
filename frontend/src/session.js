@@ -14,11 +14,14 @@ const session = reactive({
     admin: null,
 
     initialize() {
-        if (sessionStorage.utilisateur) {
-            this.utilisateur = sessionStorage.utilisateur;
+        if (sessionStorage.id_utilisateur) {
+            this.id_utilisateur = sessionStorage.id_utilisateur;
         }
         if (sessionStorage.motDePasse) {
             this.motDePasse = sessionStorage.motDePasse;
+        }
+        if (sessionStorage.admin) {
+            this.admin = sessionStorage.admin;
         }
         if (this.id_utilisateur == null && this.utilisateur != null) {
             this.fetchUser().catch(err => console.error("L'authentification initiale a échouée: ", err));
@@ -66,6 +69,7 @@ const session = reactive({
                 id_utilisateur: this.id_utilisateur,
                 admin: this.admin
             }
+            sessionStorage.admin = this.admin;
             return utilisateur;
         } else {
             this.id_utilisateur = null;
