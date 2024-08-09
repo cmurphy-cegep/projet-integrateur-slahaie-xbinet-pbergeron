@@ -21,7 +21,7 @@
         <etape v-for="(etape) in etapes" :description="etape.description" :numero="etape.ordre_etape"></etape>
     </div>
     <div>
-        <Note :note = 2></Note>
+        <Note :note :recetteKey></Note>
     </div>
     
 </template>
