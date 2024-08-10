@@ -1,12 +1,17 @@
 //Tests pour les fonctionalité relier aux queries des recettes
 
 const noteQueries = require('./queries/noteQueries.js');
+const pool = require('./queries/DBPool.js');
+//const { expect } = require('chai');
 
 describe("Fetching notes", function () {
 
-    test("expect rating to be of type number", function () {
-        let rating = noteQueries.getNote("Spaghetti_Carbonara");
-        expect(rating.note).to.be.a('number');
+    afterAll(async () => {
+        await pool.end(); // Close the pool after all tests are done
+    });
+    test("expect rating to be of type number", async function () {
+        let rating = await noteQueries.getNote('Spaghetti_Carbonara', 'admin');
+        expect(typeof rating).toBe('number');
     });
     test("Calculating average of ratings", function () {
         let ratings = [

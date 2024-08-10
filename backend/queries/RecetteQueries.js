@@ -35,7 +35,7 @@ const getRecette = async (recette_id) => {
     const result = await pool.query(
         `SELECT * FROM Recettes WHERE id_recette = $1`, [recette_id]
     );
-    return await result.rows[0];
+    return await result.rows[0].note;
 }
 exports.getRecette = getRecette;
 
