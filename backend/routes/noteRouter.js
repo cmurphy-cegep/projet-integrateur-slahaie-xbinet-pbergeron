@@ -15,3 +15,10 @@ router.post('/:id_recette', (req, res, next) => {
         
     })
 })
+router.get('/:id_recette', (req, res, next) => {
+    noteQueries.getNote.then(note => {
+        res.json(note);
+    }).catch(err => {
+        return next(err);
+    });
+});
