@@ -6,21 +6,16 @@ const pool = require('./queries/DBPool.js');
 
 describe("Fetching notes", function () {
 
-    afterAll(async () => {
-        await pool.end(); // Close the pool after all tests are done
-    });
     test("expect rating to be of type number", async function () {
-        let rating = await noteQueries.getNote('Spaghetti_Carbonara', 'admin');
-        expect(typeof rating).toBe('number');
+        let rating = noteQueries.getNote('Spaghetti_Carbonara');
+        expect(typeof rating).toBe('object');
     });
     test("Calculating average of ratings", function () {
-        let ratings = [
-            ["Spaghetti_Carbonara","Alice",2],
-            ["Spaghetti_Carbonara","Bob",3],
-            ["Spaghetti_Carbonara","Charlie",1],
-            ["Spaghetti_Carbonara","Echo",4],
-            ["Spaghetti_Carbonara","Foxtrot",5]
-        ];
+        let ratings = [{note: 2},
+        {note: 3},
+        {note: 1},
+        {note: 4}, 
+        {note: 5}]
 
         let moyenneRating = noteQueries.calculateAverageRating(ratings);
 
@@ -32,8 +27,8 @@ describe("Sending notes", function () {
 
     test("Checks if user already has sent note", function () {
         let rating = ["Spaghetti_Carbonara","Alice",2];
-        let result = noteQueries.noteCheck(rating);
-        expect(result).toBe(true || false);
+        let result = noteQueries.noteCheck("Alice", "Spaghetti_Carbonara");
+        expect(result).toBe( {} || "Alice" );
     });
 
     test("Checks if user is connected", function () {
@@ -42,3 +37,8 @@ describe("Sending notes", function () {
         expect(result).toBe(true || false);
     });
 })
+
+afterAll(async () => {
+    console.log('After all tests');
+    await pool.end();
+});

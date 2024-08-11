@@ -29,7 +29,11 @@ export default {
                     throw new Error("note introuvable");   
                 }
             }).then((noteRecu) => {
-                this.note = noteRecu.note
+                if (!noteRecu) {
+                    this.note = 0;
+                } else {
+                    this.note = noteRecu;
+                }
             }).catch((error) => {
                 console.log("Erreur", error);
             });
@@ -54,12 +58,25 @@ export default {
             ).then((response) => {
                 if (response.ok) {
                     alert("Note envoyé.")
+                    this.chargerNote(recetteKey);
                 } else {
-                    alert("Erreur lors de l'envoi de la note.")
+                    if (response.status == 404) {
+                        alert("Vous avez déjà noter cette recette.")
+                    } else {
+                        alert("Erreur lors de l'envoi de la note.")
+                    }
                 }
             }).catch((error) => {
                 console.log("Erreur", error);
             });
+        }
+    },
+    mounted() {
+        this.chargerNote(this.recetteKey);
+    },
+    watch: {
+        note(newNote) {
+            this.note = newNote;
         }
     }
 }

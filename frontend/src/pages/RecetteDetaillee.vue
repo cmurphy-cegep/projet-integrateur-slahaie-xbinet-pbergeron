@@ -21,14 +21,14 @@
         <etape v-for="(etape) in etapes" :description="etape.description" :numero="etape.ordre_etape"></etape>
     </div>
     <div>
-        <Note :recetteKey></Note>
+        <Note :note :recetteKey></Note>
     </div>
     
 </template>
 
 <script>
-import Ingredient from '../components/Ingredient.vue';
-import Etape from '../components/Etape.vue';
+import Ingredient from '../components/ingredient.vue';
+import Etape from '../components/etape.vue';
 import Note from '../components/Note.vue';
 import { addApiPrefixToPath } from '../api_utils';
 
