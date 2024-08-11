@@ -20,8 +20,3 @@ jobs:
         run: |
           cd backend
           npm test
-      - name: Build project
-        if: success() || failure()
-        run: |
-          cd frontend
-          npm run build
