@@ -31,9 +31,14 @@ const noteCheck = async (id_utilisateur,id_recette) => {
     );
     console.log(result.rows.length);
     if (result.rows.length == 0) {
-        return undefined;
+        return false;
     } else {
-        return id_utilisateur;
+        for (const user of result.rows) {
+            if(user == id_utilisateur){
+                return true
+            }
+        };
+        return false
     }
 };
 exports.noteCheck = noteCheck;

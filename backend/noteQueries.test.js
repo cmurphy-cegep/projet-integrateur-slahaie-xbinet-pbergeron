@@ -3,21 +3,23 @@
 const noteQueries = require('./queries/noteQueries.js');
 const pool = require('./queries/DBPool.js');
 //const { expect } = require('chai');
+jest.mock('./queries/DBPool.js');
 
 const sqlite3 = require('sqlite3').verbose();
 
-// Create an in-memory database
-const db = new sqlite3.Database(':memory:');
-
-db.serialize(() => {
-    db.run("CREATE TABLE note (id_recette TEXT,id_utilisateurs TEXT, note INT)");
 
 describe("Fetching notes", function () {
 
     //Test Fonctionne
     test("expect rating to be of type number", async function () {
-        let rating = noteQueries.getNote('Spaghetti_Carbonara');
-        expect(typeof rating).toBe('object');
+        pool.query.mockResolvedValue({rows:[{note:3},{note:2}]})
+        let rating = await noteQueries.getNote('Spaghetti_Carbonara');
+
+        expect(typeof rating[0].note).toBe('number');
+        
+    });
+    afterAll(async () => {
+        pool.query.mockRestore();
     });
     //Test Fonctionne
     test("Calculating average of ratings", function () {
@@ -36,21 +38,37 @@ describe("Fetching notes", function () {
 describe("Sending notes", function () {
 
     //Test ne fonctionne pas
-    test("Checks if user already has sent note", function () {
-        let rating = ["Spaghetti_Carbonara","Alice",2];
-        let result = noteQueries.noteCheck("Alice", "Spaghetti_Carbonara");
-        expect(result).toBe( {} || "Alice" );
+    test('should return true if id_utilisateur is found', async () => {
+        pool.query.mockResolvedValue('admin');
+        const result = await noteQueries.noteCheck('admin','Spaghetti_Carbonara');
+        expect(result).toBe(true);
+    });
+    afterAll(async () => {
+        pool.query.mockRestore();
+    });
+
+    test('should return false if id_utilisateur is not found', async () => {
+        pool.query.mockResolvedValue(undefined);
+        const result = await noteQueries.noteCheck('Alice','Spaghetti_Carbonara');
+        expect(result).toBe(false); 
+    });
+    afterAll(async () => {
+        pool.query.mockRestore();
     });
 
     //Test fonctionne
     test("Checks if user is connected", function () {
+        pool.query.mockResolvedValue({rows:['admin']});
         let user = "Patate25";
         let result = noteQueries.userVerification(user);
         expect(result).toBe(true || false);
     });
+    afterAll(async () => {
+        pool.query.mockRestore();
+    });
 })
-});
 afterAll(async () => {
     console.log('After all tests');
     await pool.end();
+    pool.query.mockRestore();
 });
