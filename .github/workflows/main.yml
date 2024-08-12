@@ -1,9 +1,6 @@
 name: pipeline CI
+on: push
 
-on:
-  push:
-    branches:
-      - main
 jobs:
   Test_job:
     runs-on: ubuntu-latest
@@ -12,11 +9,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install dependencies
+      - name: Install backend dependencies
         run: |
           cd backend 
           npm install
+          npm audit fix --force
       - name: Test
         run: |
           cd backend
           npm test
+      - name: Install frontend dependencies & build
+        if: success() || failure()
+        run: |
+          cd frontend
+          npm install
+          npm run build
