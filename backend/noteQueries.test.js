@@ -39,7 +39,7 @@ describe("Sending notes", function () {
 
     //Test ne fonctionne pas
     test('should return true if id_utilisateur is found', async () => {
-        pool.query.mockResolvedValue('admin');
+        pool.query.mockResolvedValue({rows:['admin']});
         const result = await noteQueries.noteCheck('admin','Spaghetti_Carbonara');
         expect(result).toBe(true);
     });
@@ -48,7 +48,7 @@ describe("Sending notes", function () {
     });
 
     test('should return false if id_utilisateur is not found', async () => {
-        pool.query.mockResolvedValue(undefined);
+        pool.query.mockResolvedValue({rows:[undefined]});
         const result = await noteQueries.noteCheck('Alice','Spaghetti_Carbonara');
         expect(result).toBe(false); 
     });

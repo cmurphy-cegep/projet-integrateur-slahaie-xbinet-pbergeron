@@ -29,7 +29,6 @@ const noteCheck = async (id_utilisateur,id_recette) => {
         WHERE id_recette = $1`, 
         [id_recette]
     );
-    console.log(result.rows.length);
     if (result.rows.length == 0) {
         return false;
     } else {
