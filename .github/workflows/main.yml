@@ -18,6 +18,7 @@ jobs:
           cd backend
           npm test
       - name: Install frontend dependencies & build
+        if: success() || failure()
         run: |
           cd frontend
           npm install
