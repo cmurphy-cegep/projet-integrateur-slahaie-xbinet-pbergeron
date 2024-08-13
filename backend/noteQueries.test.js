@@ -5,7 +5,6 @@ const pool = require('./queries/DBPool.js');
 //const { expect } = require('chai');
 jest.mock('./queries/DBPool.js');
 
-const sqlite3 = require('sqlite3').verbose();
 
 
 describe("Fetching notes", function () {
