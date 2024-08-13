@@ -3,7 +3,6 @@ const getImagePathForRecetteId = recetteId => `/images/${recetteId}.jpeg`;
 exports.getImagePathForRecetteId = getImagePathForRecetteId;
 
 const addImagePathToRecette = recette => {
-    console.log(getImagePathForRecetteId(recette.id))
     return {
         id: recette.id,
         name: recette.name,

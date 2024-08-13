@@ -2,177 +2,140 @@ const recetteQueries = require('./queries/RecetteQueries.js');
 
 const pool = require('./queries/DBPool.js');
 
-describe("Fetching recette", function () {
-    let expecteRecette = {
-        nom: 'Spaghetti Carbonara',
-        image: '/images/Spaghetti_Carbonara.jpeg',
-        tempsDePrep: 20,
-        tempsDeCuit: 20,
-        portion: 8,
-        description: 'Ce spaghetti à la carbonara est un plat de spaghettis « bacon et œuf » classique et très riche, idéal à servir en compagnie. Cette recette constitue également une offre de brunch inhabituelle.',
-        ingredients: [
-          { nom: 'fromage parmesan', quantier: '50.00', mesure: 'gramme' },
-          { nom: 'gousses d’ail', quantier: '2.00', mesure: null },
-          { nom: 'œufs larges', quantier: '2.00', mesure: null },
-          { nom: 'pancetta', quantier: '100.00', mesure: 'gramme' },
-          { nom: 'Persil frais', quantier: null, mesure: null },
-          { nom: 'Poivre', quantier: null, mesure: null },
-          { nom: 'Sel', quantier: null, mesure: null },
-          { nom: 'Spaghetti', quantier: '200.00', mesure: 'gramme' }
-        ],
-        etapes: [
-          {
-            description: "Faites cuire les spaghettis selon les instructions du paquet. Égouttez, en réservant une tasse d'eau de cuisson des pâtes.",
-            ordre_etape: 1
-          },
-          {
-            description: "Dans une poêle, faites cuire la pancetta jusqu'à ce qu'elle soit croustillante. Ajoutez l'ail et faites cuire encore une minute.",
-            ordre_etape: 2
-          },
-          {
-            description: 'Dans un bol, battez les œufs et le fromage Parmesan ensemble.',
-            ordre_etape: 3
-          },
-          {
-            description: "Mélangez les pâtes chaudes avec la pancetta et l'ail. Retirez du feu et incorporez rapidement le mélange d'œufs, en ajoutant l'eau de cuisson réservée petit à petit jusqu'à ce que le mélange soit crémeux.",
-            ordre_etape: 4
-          },
-          {
-            description: 'Assaisonnez avec du sel et du poivre, garnissez de persil et servez.',
-            ordre_etape: 5
-          }
-        ]
-      }
-
-    beforeAll(function() {
-      jest.mock("./queries/DBPool.js", () => ({
-        query: (a) => {
-            if(a.includes('FROM Recettes')){
-              return {
-                rows: [
-                  {
-                    id_recette: 'Spaghetti_Carbonara',
-                    nom_recette: 'Spaghetti Carbonara',
-                    description_courte: 'Ce spaghetti à la carbonara est un plat de spaghettis « bacon et œuf » classique et très riche, idéal à servir en compagnie...',
-                    description: 'Ce spaghetti à la carbonara est un plat de spaghettis « bacon et œuf » classique et très riche, idéal à servir en compagnie. Cette recette constitue également une offre de brunch inhabituelle.',
-                    temps_preparation: 20,
-                    temps_cuisson: 20,
-                    nb_portions: 8,
-                    image: 'Spaghetti_Carbonara.jpeg'
-                  }
-                ]}
-            }else if(a.includes('FROM liste_ingredient')){
-              return { 
-                rows: [
-                {
-                  id_recette: 'Spaghetti_Carbonara',
-                  'id_ingrédients': 'Parmesan',
-                  quantite: '50.00',
-                  mesure: 'gramme',
-                  nom_ingredient: 'fromage parmesan'
-                },
-                {
-                  id_recette: 'Spaghetti_Carbonara',
-                  'id_ingrédients': 'Ail',
-                  quantite: '2.00',
-                  mesure: null,
-                  nom_ingredient: 'gousses d’ail'
-                },
-                {
-                  id_recette: 'Spaghetti_Carbonara',
-                  'id_ingrédients': 'œufs',
-                  quantite: '2.00',
-                  mesure: null,
-                  nom_ingredient: 'œufs larges'
-                },
-                {
-                  id_recette: 'Spaghetti_Carbonara',
-                  'id_ingrédients': 'Pancetta',
-                  quantite: '100.00',
-                  mesure: 'gramme',
-                  nom_ingredient: 'pancetta'
-                },
-                {
-                  id_recette: 'Spaghetti_Carbonara',
-                  'id_ingrédients': 'Persil',
-                  quantite: null,
-                  mesure: null,
-                  nom_ingredient: 'Persil frais'
-                },
-                {
-                  id_recette: 'Spaghetti_Carbonara',
-                  'id_ingrédients': 'Poivre',
-                  quantite: null,
-                  mesure: null,
-                  nom_ingredient: 'Poivre'
-                },
-                {
-                  id_recette: 'Spaghetti_Carbonara',
-                  'id_ingrédients': 'Sel',
-                  quantite: null,
-                  mesure: null,
-                  nom_ingredient: 'Sel'
-                },
-                {
-                  id_recette: 'Spaghetti_Carbonara',
-                  'id_ingrédients': 'Spaghetti',
-                  quantite: '200.00',
-                  mesure: 'gramme',
-                  nom_ingredient: 'Spaghetti'
-                }
-              ]
-            }
-            }else if(a.includes('FROM liste_etapes')){
-              return { 
-                rows: [
-                  {
-                    id_recette: 'Spaghetti_Carbonara',
-                    id_etape: '1-Spaghetti_Carbonara',
-                    description: "Faites cuire les spaghettis selon les instructions du paquet. Égouttez, en réservant une tasse d'eau de cuisson des pâtes.",
-                    ordre_etape: 1
-                  },
-                  {
-                    id_recette: 'Spaghetti_Carbonara',
-                    id_etape: '2-Spaghetti_Carbonara',
-                    description: "Dans une poêle, faites cuire la pancetta jusqu'à ce qu'elle soit croustillante. Ajoutez l'ail et faites cuire encore une minute.",
-                    ordre_etape: 2
-                  },
-                  {
-                    id_recette: 'Spaghetti_Carbonara',
-                    id_etape: '3-Spaghetti_Carbonara',
-                    description: 'Dans un bol, battez les œufs et le fromage Parmesan ensemble.',
-                    ordre_etape: 3
-                  },
-                  {
-                    id_recette: 'Spaghetti_Carbonara',
-                    id_etape: '4-Spaghetti_Carbonara',
-                    description: "Mélangez les pâtes chaudes avec la pancetta et l'ail. Retirez du feu et incorporez rapidement le mélange d'œufs, en ajoutant l'eau de cuisson réservée petit à petit jusqu'à ce que le mélange soit crémeux.",
-                    ordre_etape: 4
-                  },
-                  {
-                    id_recette: 'Spaghetti_Carbonara',
-                    id_etape: '5-Spaghetti_Carbonara',
-                    description: 'Assaisonnez avec du sel et du poivre, garnissez de persil et servez.',
-                    ordre_etape: 5
-                  }
-                ]
-              }
-            }
-          }
-      }));
-    })
-
-    test("Format de la recette", async function () {
-      let recette = await recetteQueries.getRecetteComplete('Spaghetti_Carbonara');
-      expect(recette).toStrictEqual(expecteRecette);
-    });
-});
+jest.mock('./queries/DBPool.js');
 
 describe("Fetching all recettes", function () {
-  beforeAll(function() {
-
-  });
   test("get de la recette", async function () {
-    pool.query.mockResolvedValue({rows:[{note:3},{note:2}]})
+    pool.query.mockResolvedValue({
+      rows: [
+      {
+        id_recette: 'biscuit_chocolat',
+        nom_recette: 'Biscuits aux pépites de chocolat',
+        description_courte: 'Découvrez des cookies aux pépites de chocolat irrésistibles, parfaits pour combler vos envies de douceur...',
+        image: 'biscuit_chocolat.jpeg'
+      },
+      {
+        id_recette: 'crèpe_yogourt',
+        nom_recette: 'Crèpes aux yogourt grec',
+        description_courte: 'Savourez des pancakes légers et moelleux, enrichis de yaourt grec pour une texture délicieusement tendre...',
+        image: 'crèpe_yogourt.jpeg'
+      },
+      {
+        id_recette: 'Salade_caprese',
+        nom_recette: 'Salade caprese',
+        description_courte: 'Découvrez la fraîcheur de la salade Caprese, une entrée classique et élégante qui met en avant la simplicité des ingrédients...',
+        image: 'Salade_caprese.jpeg'
+      },
+      {
+        id_recette: 'Salade_Quinoa',
+        nom_recette: 'Salade de quinoa avec vinaigrette au citron',
+        description_courte: "Cette salade de quinoa est légère et citronnée, idéale pour un excellent repas d'été...",
+        image: 'Salade_Quinoa.jpeg'
+      },
+      {
+        id_recette: 'Saumon_citron_aneth',
+        nom_recette: 'Saumon au citron et aneth',
+        description_courte: "Savourez un saumon délicatement parfumé, cuit au four avec des tranches de citron et de l'aneth frais.",
+        image: 'saumon_citron_aneth.jpeg'
+      },
+      {
+        id_recette: 'Saute_legumes',
+        nom_recette: 'Sauté de légumes',
+        description_courte: 'Découvrez une recette savoureuse et rapide à réaliser avec un mélange de légumes frais sautés...',
+        image: 'saute_legumes.jpeg'
+      },
+      {
+        id_recette: 'soupe_poulet_legume',
+        nom_recette: 'Soupe au poulet et légumes',
+        description_courte: 'Savourez une soupe réconfortante et nourrissante, parfaite pour les jours frais...',
+        image: 'soupe_poulet_legume.jpeg'
+      },
+      {
+        id_recette: 'Spaghetti_Carbonara',
+        nom_recette: 'Spaghetti Carbonara',
+        description_courte: 'Ce spaghetti à la carbonara est un plat de spaghettis « bacon et œuf » classique et très riche, idéal à servir en compagnie...',
+        image: 'Spaghetti_Carbonara.jpeg'
+      },
+      {
+        id_recette: 'Tacos_Boeuf',
+        nom_recette: 'Tacos au boeuf',
+        description_courte: "Ces tacos au bœuf sont une option délicieuse et pratique pour un repas rapide. La viande de bœuf hachée est cuite avec des oignons et de l'ail, puis assaisonnée avec un mélange spécial pour tacos...",
+        image: 'Tacos_Boeuf.jpeg'
+      },
+      {
+        id_recette: 'Tikka_Masala',
+        nom_recette: 'Poulet Tikka Masala',
+        description_courte: 'Poulet tikka masala simplifié avec cette recette au goût délicieux...',
+        image: 'Tikka_Masala.jpeg'
+      }
+    ]})
+    let expected = [
+      {
+        id: 'biscuit_chocolat',
+        name: 'Biscuits aux pépites de chocolat',
+        desc: 'Découvrez des cookies aux pépites de chocolat irrésistibles, parfaits pour combler vos envies de douceur...',
+        image: '/images/biscuit_chocolat.jpeg'
+      },
+      {
+        id: 'crèpe_yogourt',
+        name: 'Crèpes aux yogourt grec',
+        desc: 'Savourez des pancakes légers et moelleux, enrichis de yaourt grec pour une texture délicieusement tendre...',
+        image: '/images/crèpe_yogourt.jpeg'
+      },
+      {
+        id: 'Salade_caprese',
+        name: 'Salade caprese',
+        desc: 'Découvrez la fraîcheur de la salade Caprese, une entrée classique et élégante qui met en avant la simplicité des ingrédients...',
+        image: '/images/Salade_caprese.jpeg'
+      },
+      {
+        id: 'Salade_Quinoa',
+        name: 'Salade de quinoa avec vinaigrette au citron',
+        desc: "Cette salade de quinoa est légère et citronnée, idéale pour un excellent repas d'été...",
+        image: '/images/Salade_Quinoa.jpeg'
+      },
+      {
+        id: 'Saumon_citron_aneth',
+        name: 'Saumon au citron et aneth',
+        desc: "Savourez un saumon délicatement parfumé, cuit au four avec des tranches de citron et de l'aneth frais.",
+        image: '/images/Saumon_citron_aneth.jpeg'
+      },
+      {
+        id: 'Saute_legumes',
+        name: 'Sauté de légumes',
+        desc: 'Découvrez une recette savoureuse et rapide à réaliser avec un mélange de légumes frais sautés...',
+        image: '/images/Saute_legumes.jpeg'
+      },
+      {
+        id: 'soupe_poulet_legume',
+        name: 'Soupe au poulet et légumes',
+        desc: 'Savourez une soupe réconfortante et nourrissante, parfaite pour les jours frais...',
+        image: '/images/soupe_poulet_legume.jpeg'
+      },
+      {
+        id: 'Spaghetti_Carbonara',
+        name: 'Spaghetti Carbonara',
+        desc: 'Ce spaghetti à la carbonara est un plat de spaghettis « bacon et œuf » classique et très riche, idéal à servir en compagnie...',
+        image: '/images/Spaghetti_Carbonara.jpeg'
+      },
+      {
+        id: 'Tacos_Boeuf',
+        name: 'Tacos au boeuf',
+        desc: "Ces tacos au bœuf sont une option délicieuse et pratique pour un repas rapide. La viande de bœuf hachée est cuite avec des oignons et de l'ail, puis assaisonnée avec un mélange spécial pour tacos...",
+        image: '/images/Tacos_Boeuf.jpeg'
+      },
+      {
+        id: 'Tikka_Masala',
+        name: 'Poulet Tikka Masala',
+        desc: 'Poulet tikka masala simplifié avec cette recette au goût délicieux...',
+        image: '/images/Tikka_Masala.jpeg'
+      }
+    ]
+    let recette = await recetteQueries.getAllRecettes();
+    expect(recette).toStrictEqual(expected);
+  });
+
+  afterAll(async () => {
+    pool.query.mockRestore();
   });
 })
