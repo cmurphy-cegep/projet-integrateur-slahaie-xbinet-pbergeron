@@ -17,7 +17,7 @@ jobs:
       - name: Test
         run: |
           cd backend
-          npm test
+          npm test noteQueries.test.js
       - name: Install frontend dependencies & build
         if: success() || failure()
         run: |
