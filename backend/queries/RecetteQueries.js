@@ -3,7 +3,6 @@ const getImagePathForRecetteId = recetteId => `/images/${recetteId}.jpeg`;
 exports.getImagePathForRecetteId = getImagePathForRecetteId;
 
 const addImagePathToRecette = recette => {
-    console.log(getImagePathForRecetteId(recette.id))
     return {
         id: recette.id,
         name: recette.name,
@@ -30,6 +29,41 @@ const getAllRecettes = async () => {
     });
 };
 exports.getAllRecettes = getAllRecettes;
+
+const getRecetteComplete = async (recette_id) => {
+    return getRecette(recette_id).then(recettes => {
+        return {
+            nom: recettes.nom_recette,
+            image: '/images/' + recettes.image,
+            tempsDePrep: recettes.temps_preparation,
+            tempsDeCuit: recettes.temps_cuisson,
+            portion: recettes.nb_portions,
+            description: recettes.description,
+            ingredients: [],
+            etapes: []
+        };
+    }).then((jsonObj) => {
+        return getIngredient(recette_id).then((rep) => {
+            rep.forEach((element) => {
+                jsonObj.ingredients.push({
+                    nom: element.nom_ingredient,
+                    quantier: element.quantite,
+                    mesure: element.mesure
+                })
+            })
+            return getEtape(recette_id).then((rep) => {
+                rep.forEach((element) => {
+                    return jsonObj.etapes.push({
+                        description: element.description,
+                        ordre_etape: element.ordre_etape
+                    })
+                })
+                return jsonObj;
+            })
+        })
+    });
+}
+exports.getRecetteComplete = getRecetteComplete;
 
 const getRecette = async (recette_id) => {
     const result = await pool.query(
