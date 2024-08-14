@@ -12,7 +12,7 @@ export default [
       "no-undef": [0,false],
       "no-constant-binary-expression": [0,false],
       "constructor-super": [0,false],
-      "max-params": ["error",5],
+      "max-params": ["error",1],
       "no-duplicate-imports": ["error"],
       "no-unused-labels": ["error"],
       "max-lines": ["error",200],
