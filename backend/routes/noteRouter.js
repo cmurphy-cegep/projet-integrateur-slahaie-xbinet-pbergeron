@@ -1,15 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const sharp = require('sharp');
-const fs = require('fs');
 
-const multer = require('multer');
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
 const noteQueries = require('../queries/noteQueries');
-const { error } = require('console');
 
 router.post('/', (req, res, next) => {
     console.log(req.body);
@@ -21,7 +15,7 @@ router.post('/', (req, res, next) => {
     } else {
         noteQueries.noteCheck(id_utilisateur, id_recette).then(result => {
             if (result == undefined) {
-                noteQueries.postNote(id_recette, id_utilisateur, note).then(notes => {
+                noteQueries.postNote(id_recette, id_utilisateur, note).then( () => {
                     const respNote = noteQueries.calculateAverageRating(note);
                     res.json(respNote);
                 })
@@ -33,7 +27,7 @@ router.post('/', (req, res, next) => {
    
         
 })
-router.get('/:id_recette', async (req, res, next) => {
+router.get('/:id_recette', async (req, res) => {
     noteQueries.getNote(req.params.id_recette).then(note => {
         const respNote = noteQueries.calculateAverageRating(note);
         res.json(respNote);

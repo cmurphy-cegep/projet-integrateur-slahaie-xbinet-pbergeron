@@ -2,7 +2,7 @@ const pool = require('./DBPool');
 
 const postNote = async (id_recette, id_utilisateur, note) => {
 
-    const result = await pool.query(
+    await pool.query(
         `INSERT INTO note (id_recette, id_utilisateurs, note)
         VALUES ($1, $2, $3)`, 
         [id_recette, id_utilisateur, note]

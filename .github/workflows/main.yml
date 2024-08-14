@@ -24,3 +24,5 @@ jobs:
           cd frontend
           npm install
           npm run build
+      - name: run eslint
+        run: eslint

@@ -8,6 +8,5 @@ class HttpError extends Error {
   getJsonMessage() {
     return { status: this.status, message: this.message };
   }
-}
-
+};
 module.exports = HttpError;
