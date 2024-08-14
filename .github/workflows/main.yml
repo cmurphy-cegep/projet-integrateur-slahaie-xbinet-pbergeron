@@ -25,4 +25,6 @@ jobs:
           npm install
           npm run build
       - name: run eslint
-        run: npx eslint --config eslint.config.mjs .
+        run: |
+        cd backend
+        npx eslint --config eslint.config.mjs .
