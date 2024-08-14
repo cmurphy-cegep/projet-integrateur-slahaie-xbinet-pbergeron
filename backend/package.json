@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -31,5 +32,10 @@
     "eslint": "^9.9.0",
     "eslint-plugin-vue": "^9.27.0",
     "globals": "^15.9.0"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage", 
+    "coverageReporters": ["json", "html", "text-summary"] 
   }
 }
