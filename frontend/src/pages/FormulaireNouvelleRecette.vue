@@ -7,8 +7,12 @@
                 <input id="nom" v-model="nom">
             </div>
             <div class="form-control">
-                <label for="temps">Temps de préparation en minutes</label>
-                <input type="number" id="temps" v-model="temps">
+                <label for="preparation">Temps de préparation en minutes</label>
+                <input type="number" id="preparation" v-model="preparation">
+            </div>
+            <div class="form-control">
+                <label for="cuisson">Temps de cuisson en minutes</label>
+                <input type="number" id="cuisson" v-model="cuisson">
             </div>
             <div class="form-control">
                 <label for="portions">Nombre de portions</label>
@@ -25,26 +29,7 @@
                     <th>Quantiter</th>
                     <th>Uniter</th>
                 </tr>
-                <tr>
-                    <td>
-                        <input type="text">
-                    </td>
-                    <td>
-                        <input type="number">
-                    </td>
-                    <td>
-                        <input type="text">
-                    </td>
-                    <td>
-                        <button>▲</button>
-                    </td>
-                    <td>
-                        <button>▼</button>
-                    </td>
-                    <td>
-                        <button>Supprimer</button>
-                    </td>
-                </tr>
+                <Ingredient v-for="ingredient in ingredients"></Ingredient>
                 <tr>
                     <td>
                         <button>Ajouter</button>
@@ -53,20 +38,7 @@
             </table>
             <table>
                 <caption>Etape</caption>
-                <tr>
-                    <td>
-                        <input type="text">
-                    </td>
-                    <td>
-                        <button>▲</button>
-                    </td>
-                    <td>
-                        <button>▼</button>
-                    </td>
-                    <td>
-                        <button>Supprimer</button>
-                    </td>
-                </tr>
+                <Etape v-for="etape in etapes"></Etape>
                 <tr>
                     <td>
                         <button>Ajouter</button>
@@ -79,13 +51,24 @@
 </template>
 
 <script>
+import Ingredient from '../components/formulaire/IngredientRow.vue';
+import Etape from '../components/formulaire/EtapeRow.vue';
+
+
 export default {
+    components: {
+        Ingredient,
+        Etape
+    },
     data: function () {
         return {
             nom: '',
-            temps: '',
-            portions: '',
-            description: ''
+            cuisson: 0,
+            preparation: 0,
+            portions: 0,
+            description: '',
+            ingredients: [{},{}],
+            etapes: [{},{}]
         };
     }
 }
