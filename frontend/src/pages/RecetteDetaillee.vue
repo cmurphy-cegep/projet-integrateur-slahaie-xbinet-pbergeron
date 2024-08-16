@@ -23,6 +23,9 @@
     <div>
         <Note :note :recetteKey></Note>
     </div>
+    <div>
+        <Commentaire :commentaire :recetteKey></Commentaire>
+    </div>
     
 </template>
 
@@ -30,13 +33,16 @@
 import Ingredient from '../components/ingredient.vue';
 import Etape from '../components/etape.vue';
 import Note from '../components/Note.vue';
+import commentaire from '../components/commentaire.vue';
 import { addApiPrefixToPath } from '../api_utils';
 
 export default {
     components: {
         Ingredient,
         Etape,
-        Note
+        Note,
+        Commentaire
+        
     },
     data: function () {
         return {
@@ -72,6 +78,7 @@ export default {
                     this.description = recette.description.split('\n');
                     this.ingredients = recette.ingredients;
                     this.etapes = recette.etapes;
+
                 }).catch((error) => {
                     console.log("Erreur", error);
                 });
