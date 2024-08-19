@@ -139,3 +139,15 @@ describe("Fetching all recettes", function () {
     pool.query.mockRestore();
   });
 })
+
+describe('fetching image', function () {
+
+  test('fetching image with existing image', async function () {
+    pool.query.mockResolvedValue({rows:['biscuit_chocolat.jpeg']});
+    let image = 'biscuit_chocolat.jpeg';
+    let result = recetteQueries.getRecetteImageContent()
+  });
+  afterAll(async () => {
+    pool.query.mockRestore();
+  });
+})

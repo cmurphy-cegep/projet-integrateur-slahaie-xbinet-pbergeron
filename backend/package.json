@@ -31,11 +31,17 @@
     "@eslint/js": "^9.9.0",
     "eslint": "^9.9.0",
     "eslint-plugin-vue": "^9.27.0",
-    "globals": "^15.9.0"
+    "globals": "^15.9.0",
+    "jest-environment-nightwatch": "^0.2.2",
+    "nightwatch": "^3.7.0"
   },
   "jest": {
     "collectCoverage": true,
-    "coverageDirectory": "coverage", 
-    "coverageReporters": ["json", "html", "text-summary"] 
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "json",
+      "html",
+      "text-summary"
+    ]
   }
 }

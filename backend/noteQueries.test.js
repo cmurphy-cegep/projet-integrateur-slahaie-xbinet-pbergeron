@@ -56,11 +56,21 @@ describe("Sending notes", function () {
     });
 
     //Test fonctionne
-    test("Checks if user is connected", function () {
+    test("Checks if user is connected. Should return true if he is", function () {
         pool.query.mockResolvedValue({rows:['admin']});
         let user = "Patate25";
         let result = noteQueries.userVerification(user);
-        expect(result).toBe(true || false);
+        expect(result).toBe(true);
+    });
+    afterAll(async () => {
+        pool.query.mockRestore();
+    });
+
+    test("Checks if user is connected. Should return false if he is not", function () {
+        pool.query.mockResolvedValue({rows:['admin']});
+        let user = null;
+        let result = noteQueries.userVerification(user);
+        expect(result).toBe(false);
     });
     afterAll(async () => {
         pool.query.mockRestore();
