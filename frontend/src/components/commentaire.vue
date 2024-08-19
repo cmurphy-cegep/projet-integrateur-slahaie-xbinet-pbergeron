@@ -1,15 +1,26 @@
 <template>
     <div>
-        <div v-for="(commentaire) in  commentaires" :commentaire = commentaire.commentaire, :date = commentaire.date_publication></div>
+        <form @submit.prevent="envoyerCommentaire(recetteKey)">
+        <div>
+        <textarea id="commentaire" name="commentaire" rows="4" cols="50" v-model="this.commentaire_send"></textarea>
+        </div>    
+        <button type="submit">Commentez</button>
+        </form>
+        <commentaireIndividuel v-for="commentaire in commentaires" :utilisateur="commentaire.utilisateur" :commentaire="commentaire.commentaire"
+            :date="commentaire.date" />
     </div>
 </template>
 
 <script>
 import session from '../session';
+import commentaireIndividuel from './commentaireIndividuel.vue';
 export default {
+    components: {
+        commentaireIndividuel: commentaireIndividuel
+    },
     data: function () {
         return {
-            commentaire: [""],
+            commentaires: [],
             commentaire_send: ""
         }
     },
@@ -24,7 +35,7 @@ export default {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error("note introuvable");   
+                    throw new Error("Un probleme est survvenu");   
                 }
             }).then((commentaireRecu) => {
                 if (!commentaireRecu) {
@@ -41,12 +52,12 @@ export default {
                 alert("Vous devez être connecté afin de soumettre un commentaire.")
                 throw new Error("Erreur");
             }
-            const envoiNote = {
+            const envoiCommentaire = {
                 id_recette: recetteKey,
                 id_utilisateur: session.id_utilisateur,
                 commentaire: this.commentaire_send
             };
-            fetch('/api/commentaire', {
+            fetch('/api/commentaire'+ recetteKey, {
                 method: 'POST',
                 headers: {
                 "Content-Type": "application/json"
@@ -58,7 +69,7 @@ export default {
                     alert("Commentaire envoyé.")
                     this.chargerNote(recetteKey);
                 } else {
-                        alert("Erreur lors de l'envoi de la note.")
+                        alert("Erreur lors de l'envoi du commentaire.")
                 }
             }).catch((error) => {
                 console.log("Erreur", error);
@@ -69,8 +80,8 @@ export default {
         this.chargerCommentaire(this.recetteKey);
     },
     watch: {
-        note(newCommentaire) {
-            this.note = newCommentaire;
+        commentaire(newCommentaire) {
+            this.commentaire = newCommentaire;
         }
     }
 }

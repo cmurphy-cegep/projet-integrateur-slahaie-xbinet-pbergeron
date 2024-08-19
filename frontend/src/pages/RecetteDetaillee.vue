@@ -24,7 +24,7 @@
         <Note :note :recetteKey></Note>
     </div>
     <div>
-        <Commentaire :commentaire :recetteKey></Commentaire>
+        <commentaire :recetteKey></commentaire>
     </div>
     
 </template>
@@ -41,7 +41,7 @@ export default {
         Ingredient,
         Etape,
         Note,
-        Commentaire
+        commentaire
         
     },
     data: function () {
