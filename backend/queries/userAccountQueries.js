@@ -25,22 +25,19 @@ const getUserAccount = async (userId) => {
     const result = await pool.query(
         `SELECT id_utilisateurs, nom_utilisateur, admin 
         FROM utilisateurs
-        WHERE
-            id_utilisateurs = $1`,
+        WHERE id_utilisateurs = $1`,
         [userId]
     );
 
     const row = result.rows[0];
-
+    console.log(row);
     if (row) {
-        return {
-            id_utilisateur: row.id_utilisateurs,
-            nom: row.nom_utilisateur,
-            admin: row.admin
-        };
+        return row.id_utilisateurs;
+    } else {
+        return undefined;
     }
 
-    return undefined;
+
 };
 exports.getUserAccount = getUserAccount;
 
@@ -53,6 +50,10 @@ const createUserAccount = async (idUser, user, password_hash, password_salt) => 
         [idUser, user, password_hash, password_salt, false]
     );
 
-    return getUserAccount(idUser);
+    return {
+        id_utilisateur: idUser,
+        utilisateur: user,
+        admin: false
+    }
 };
 exports.createUserAccount = createUserAccount;

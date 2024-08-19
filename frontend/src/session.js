@@ -101,12 +101,19 @@ const session = reactive({
         if (response.ok) {
             const user = await response.json();
             console.log(response);
+            this.admin = false;
+            sessionStorage.admin = this.admin;
             const utilisateur = {
                 id_utilisateur: this.id_utilisateur,
-                admin: user
+                admin: false
             }
             return utilisateur;
         } else {
+            this.clearCredentials();
+            if (response.status == 500) {
+                throw new Error("Compte existant");
+            }
+
             throw new Error(response.status, "Erreur lors de la création de compte");
         }
     },
