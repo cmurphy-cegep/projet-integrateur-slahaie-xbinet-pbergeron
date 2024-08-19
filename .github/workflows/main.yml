@@ -17,10 +17,14 @@ jobs:
       - name: Test
         run: |
           cd backend
-          npm test noteQueries.test.js
+          npm test -- --coverage
       - name: Install frontend dependencies & build
         if: success() || failure()
         run: |
           cd frontend
           npm install
           npm run build
+      - name: run eslint
+        run: |
+          cd backend
+          npx eslint --config eslint.config.mjs .
