@@ -45,8 +45,9 @@ describe("Fetching recette", function () {
       }
 
     beforeAll(function() {
-      jest.mock("./queries/DBPool.js", () => ({
-        query: (a) => {
+      jest.mock("./queries/RecetteQueries", () => ({
+        pool: {
+          query: (a) => {
             if(a.includes('FROM Recettes')){
               return {
                 rows: [
@@ -159,6 +160,7 @@ describe("Fetching recette", function () {
               }
             }
           }
+        }
       }));
     })
 
