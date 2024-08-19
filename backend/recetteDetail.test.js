@@ -62,7 +62,7 @@ describe("Fetching recette", function () {
                   }
                 ]}
             }else if(a.includes('FROM liste_ingredient')){
-              return { 
+              return {
                 rows: [
                 {
                   id_recette: 'Spaghetti_Carbonara',
@@ -166,4 +166,8 @@ describe("Fetching recette", function () {
       let recette = await recetteQueries.getRecetteComplete('Spaghetti_Carbonara');
       expect(recette).toStrictEqual(expecteRecette);
     });
+
+    afterAll(function() {
+      pool.end();
+    })
 });
