@@ -15,6 +15,10 @@ router.get('/:id_recette', (req, res, next) => {
     });
 })
 
+router.post('/', (req, res, next) => {
+    console.log(req.body);
+})
+
 router.get('/', (req, res, next) => {
     recetteQueries.getAllRecettes().then(recettes => {
         res.json(recettes);

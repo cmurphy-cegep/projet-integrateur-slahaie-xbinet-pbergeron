@@ -1,7 +1,7 @@
 <template>
     <div class="boxed-left">
         <h2>Nouvelle Recette</h2>
-        <form @submit.prevent="login">
+        <form @submit.prevent="">
             <div class="form-control">
                 <label for="nom">Nom de la rectte</label>
                 <input id="nom" v-model="nom">
@@ -29,23 +29,23 @@
                     <th>Quantiter</th>
                     <th>Uniter</th>
                 </tr>
-                <Ingredient v-for="ingredient in ingredients"></Ingredient>
+                <Ingredient v-for="(ingredient, index) in ingredients" :id="index" :ingredient="ingredients"></Ingredient>
                 <tr>
                     <td>
-                        <button>Ajouter</button>
+                        <button @click="ajouterIngredient">Ajouter</button>
                     </td>
                 </tr>
             </table>
             <table>
                 <caption>Etape</caption>
-                <Etape v-for="etape in etapes"></Etape>
+                <Etape v-for="(etape, index) in etapes" :id="index" :etapes="this.etapes"></Etape>
                 <tr>
                     <td>
-                        <button>Ajouter</button>
+                        <button @click="ajouterEtape">Ajouter</button>
                     </td>
                 </tr>
             </table>
-            <button>Envoyer</button>
+            <button @click="envoyer">Envoyer</button>
         </form>
     </div>
 </template>
@@ -53,23 +53,39 @@
 <script>
 import Ingredient from '../components/formulaire/IngredientRow.vue';
 import Etape from '../components/formulaire/EtapeRow.vue';
-
+import session from '../session';
 
 export default {
     components: {
         Ingredient,
         Etape
     },
-    data: function () {
+    data() {
         return {
             nom: '',
             cuisson: 0,
             preparation: 0,
             portions: 0,
             description: '',
-            ingredients: [{},{}],
-            etapes: [{},{}]
+            ingredients: [{nom: "", quantier: 0, mesure: ""}],
+            etapes: [{text: ""}]
         };
+    },
+    methods: {
+        envoyer() {
+            session.envoyerRecette(this.$data).then(() => {
+                alert("Recette envoyer");
+                this.$router.push('/');
+            }).catch(authError => {
+                alert(authError.message);
+            })
+        },
+        ajouterEtape(){
+            this.etapes.push({text: ""});
+        },
+        ajouterIngredient(){
+            this.ingredients.push({nom: "", quantier: 0, mesure: ""})
+        }
     }
 }
 </script>
