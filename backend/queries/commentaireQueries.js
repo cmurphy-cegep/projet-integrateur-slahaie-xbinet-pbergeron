@@ -8,7 +8,7 @@ const postCommentaire = async (id_recette, id_utilisateur, commentaire) => {
         [id_recette, id_utilisateur, commentaire, Date.now()]
     );
 
-    return postNote(id_recette);
+    return postCommentaire(id_recette);
 
 };
 exports.postCommentaire = postCommentaire;

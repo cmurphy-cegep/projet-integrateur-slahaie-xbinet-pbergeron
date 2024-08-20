@@ -1,25 +1,20 @@
 <template>
-    <div class="recette">
-        <img v-bind:src= "imageSrc"/>
         <div class="recette-info">
-            <div class="recette-name">
-                <p>{{ utilisateur }}</p>
+            <div class="commentaire-container">
+                <p class="commentaire-user">{{ utilisateur }} :</p>
+                <p class="commentaire-text">{{commentaire}}</p>
+                <p class="commentaire-date">{{date}}</p>
 
             </div>
-            <div>
-                <p>{{commentaire}}</p>
-                <p>{{date}}</p>
-            </div>
         </div>
-    </div>
 </template>
 
 <script>
 
 export default {
     props: {
-        utilisateur: String,
         commentaire: String,
+        utilisateur: String,
         date: Date
     }
 }
@@ -38,55 +33,28 @@ export default {
 .recette{
     display: flex;
 }
-
-img {
-    margin-right: 10px;
-    width: 100px;
-}
-
-.product {
-    margin-bottom: 20px;
-    border: 1px solid black;
+.commentaire-container {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
     padding: 10px;
-    overflow: hidden;
-    clear: both;
+    border-bottom: 1px solid #ccc; 
 }
 
-.product img {
-    float: left;
+.commentaire-container .commentaire-text {
+    flex-grow: 1;
     margin-right: 10px;
-    width: 100px;
-    object-fit: cover;
+    font-size: 1em;
 }
 
-.product-info {
-    float: left;
-    width: 60%;
-}
-
-.product-name {
+.commentaire-container .commentaire-user {
     font-weight: bold;
-    font-size: 1.2em;
-    margin-bottom: 5px;
+    margin-right: 10px;
+    font-size: 1em;
 }
 
-.product-price {
-    font-weight: bold;
-    font-size: 1.2em;
-    color: green;
-}
-
-.product-description {
-    margin-top: 5px;
+.commentaire-container .commentaire-date {
+    color: #888;
     font-size: 0.9em;
-    color: #666;
-}
-
-.product-add-to-cart {
-    float: right;
-    width: 40%;
-    text-align: right;
-    font-size: 1.2em;
-    line-height: 2em;
 }
 </style>
