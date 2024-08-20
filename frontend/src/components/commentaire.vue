@@ -4,7 +4,7 @@
             <div>
                 <textarea id="commentaire" name="commentaire" rows="4" cols="50" v-model="commentaire_send"></textarea>
             </div>    
-            <button type="submit">Commentez</button>
+            <button>Commentez</button>
         </form>
         <commentaireIndividuel 
             v-for="(commentaire, index) in commentaires" 
