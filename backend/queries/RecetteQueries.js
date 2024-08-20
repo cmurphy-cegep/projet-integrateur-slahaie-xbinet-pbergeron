@@ -31,37 +31,34 @@ const getAllRecettes = async () => {
 exports.getAllRecettes = getAllRecettes;
 
 const getRecetteComplete = async (recette_id) => {
-    return getRecette(recette_id).then(recettes => {
-        return {
-            nom: recettes.nom_recette,
-            image: '/images/' + recettes.image,
-            tempsDePrep: recettes.temps_preparation,
-            tempsDeCuit: recettes.temps_cuisson,
-            portion: recettes.nb_portions,
-            description: recettes.description,
-            ingredients: [],
-            etapes: []
-        };
-    }).then((jsonObj) => {
-        return getIngredient(recette_id).then((rep) => {
-            rep.forEach((element) => {
-                jsonObj.ingredients.push({
-                    nom: element.nom_ingredient,
-                    quantier: element.quantite,
-                    mesure: element.mesure
-                })
-            })
-            return getEtape(recette_id).then((rep) => {
-                rep.forEach((element) => {
-                    return jsonObj.etapes.push({
-                        description: element.description,
-                        ordre_etape: element.ordre_etape
-                    })
-                })
-                return jsonObj;
-            })
-        })
+    recettes = await getRecette(recette_id);
+    ingredientsData = await getIngredient(recette_id);
+    etapeData = await getEtape(recette_id);
+    recetteComplete = {
+        nom: recettes.nom_recette,
+        image: '/images/' + recettes.image,
+        tempsDePrep: recettes.temps_preparation,
+        tempsDeCuit: recettes.temps_cuisson,
+        portion: recettes.nb_portions,
+        description: recettes.description,
+        ingredients: [],
+        etapes: []
+    }
+    ingredientsData.forEach((element) => {
+        recetteComplete.ingredients.push({
+            nom: element.nom_ingredient,
+            quantier: element.quantite,
+            mesure: element.mesure
+        });
     });
+
+    etapeData.forEach((element) => {
+        return recetteComplete.etapes.push({
+            description: element.description,
+            ordre_etape: element.ordre_etape
+        });
+    });
+    return recetteComplete;
 }
 exports.getRecetteComplete = getRecetteComplete;
 
