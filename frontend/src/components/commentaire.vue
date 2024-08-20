@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="(commentaire) in  commentaires" :commentaire = commentaire.commentaire, :date = commentaire.date_publication></div>
+        <div v-for="(commentaire) in  commentaires" :commentaire = "commentaire.commentaire", :date = "commentaire.date_publication"></div>
     </div>
 </template>
 
