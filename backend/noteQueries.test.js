@@ -76,8 +76,8 @@ describe("Sending notes", function () {
         pool.query.mockRestore();
     });
 })
-afterAll(async () => {
-    console.log('After all tests');
-    await pool.end();
+afterAll( function () {
+
+    pool.end();
     pool.query.mockRestore();
 });

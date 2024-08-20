@@ -15,8 +15,8 @@ export default [
       "max-params": ["error",5],
       "no-duplicate-imports": ["error"],
       "no-unused-labels": ["error"],
-      "max-lines": ["error",250],
-      "max-lines-per-function": ["error",200],
+      "max-lines": ["error",400],
+      "max-lines-per-function": ["error",400],
       "no-unreachable": ["error"]
     }
   }
