@@ -61,7 +61,6 @@ export default {
             }
             session.inscription(userDetails).then(user => {
                 alert("Bienvenue, " + this.utilisateur + ".");
-                session.login(user.id_utilisateur,this.motDePasse);
                 this.$router.push('/');
             }).catch(Error => {
                 alert(Error.message);

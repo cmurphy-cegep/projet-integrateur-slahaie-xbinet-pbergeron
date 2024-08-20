@@ -100,14 +100,15 @@ const session = reactive({
 
         if (response.ok) {
             const user = await response.json();
-            console.log(response);
-            this.admin = false;
-            sessionStorage.admin = this.admin;
-            const utilisateur = {
-                id_utilisateur: this.id_utilisateur,
-                admin: false
+            console.log(user);
+            this.admin = user.admin;
+            this.id_utilisateur = user.id_utilisateur
+            sessionStorage.admin = user.admin;
+            sessionStorage.id_utilisateur = user.id_utilisateur
+            return {
+                id_utilisateur: user.id_utilisateur,
+                admin: user.admin
             }
-            return utilisateur;
         } else {
             this.clearCredentials();
             if (response.status == 500) {

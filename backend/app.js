@@ -90,7 +90,7 @@ app.post('/inscription', (req, res, next) => {
     const saltBuf = crypto.randomBytes(16);
     const salt = saltBuf.toString("base64");
 
-    const verif = utilisateurQueries.getUserAccount(id_user).then( verification => {
+    utilisateurQueries.getUserAccount(id_user).then( verification => {
       console.log(verification);
       if (id_user === verification) {
         return next({ status: 500, message: "compte existant"})
@@ -100,9 +100,10 @@ app.post('/inscription', (req, res, next) => {
     
           const password_hash = derivedKey.toString("base64");
           
-          const userReturn = utilisateurQueries.createUserAccount(id_user,user,password_hash,salt);
-    
-          res.json(userReturn);
+          utilisateurQueries.createUserAccount(id_user,user,password_hash,salt).then(userReturn => {
+
+            res.json(userReturn);
+          });
         }
         
     );
