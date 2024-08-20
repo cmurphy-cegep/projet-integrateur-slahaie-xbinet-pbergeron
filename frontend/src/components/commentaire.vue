@@ -48,34 +48,41 @@ export default {
             });
         },
         envoyerCommentaire(recetteKey) {
-            if (session.id_utilisateur == null) {
-                alert("Vous devez être connecté afin de soumettre un commentaire.");
-                throw new Error("Erreur");
-            }
-            const envoiCommentaire = {
-                id_recette: recetteKey,
-                id_utilisateur: session.id_utilisateur,
-                commentaire: this.commentaire_send
-            };
-            fetch('/api/commentaire/' + recetteKey, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(envoiCommentaire)
-            })
-            .then((response) => {
-                if (response.ok) {
-                    alert("Commentaire envoyé.");
-                    this.chargerCommentaire(recetteKey);
-                } else {
-                    alert("Erreur lors de l'envoi du commentaire.");
-                }
-            })
-            .catch((error) => {
-                console.log("Erreur", error);
-            });
+    if (!session.id_utilisateur) {
+        alert("Vous devez être connecté afin de soumettre un commentaire.");
+        return;
+    }
+
+    const envoiCommentaire = {
+        id_recette: recetteKey,
+        id_utilisateur: session.id_utilisateur,
+        commentaire: this.commentaire_send
+    };
+
+    fetch('/api/commentaire/', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(envoiCommentaire)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return response.text().then(text => { throw new Error(text); });
         }
+    })
+    .then(() => {
+        alert("Commentaire envoyé.");
+        this.chargerCommentaire(recetteKey);
+        this.commentaire_send = '';
+    })
+    .catch(error => {
+        console.error("Erreur lors de l'envoi du commentaire:", error);
+        alert("Erreur lors de l'envoi du commentaire. Veuillez réessayer.");
+    });
+}
     },
     mounted() {
         this.chargerCommentaire(this.recetteKey);
