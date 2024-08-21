@@ -1,27 +1,28 @@
 <template>
-    <div>
-        
+    <div class="boxed-left">
+        <h2>Inscription</h2>
         <form @submit.prevent="inscription">
-            <div class="boxed-left">
-                <h2>Inscription</h2>
-                <div>
+            <div class="form-control" :class="{ invalide: !identifiantValide }">
                 <label for="utilisateur">Identifiant utilisateur:</label>
-                <input id="utilisateur" v-model="utilisateur">
+                <input id="utilisateur" v-model="utilisateur" @blur="validerIdentifiant">
+                <span v-if="!identifiantValide">Veuillez entrez un identifiant valide</span>
             </div>
-            <div>
+            <div class="form-control" :class="{ invalide: !nomValide }">
                 <label for="nom">Prénom et nom de l'utilisateur:</label>
-                <input id="nom" v-model="nom">
+                <input id="nom" v-model="nom" @blur="validerNom">
+                <span v-if="!nomValide">Veuillez entrez un prénom et un nom valide</span>
             </div>
-            <div>
+            <div class="form-control" :class="{ invalide: !motDePasseValide}">
                 <label for="motDePasse">Mot de passe:</label>
-                <input type="password" id="motDePasse" v-model="motDePasse">
+                <input type="password" id="motDePasse" v-model="motDePasse" @blur="validerMotDePasse">
+                <span v-if="!motDePasseValide">Veuillez entrez un mot de passe valide</span>
             </div>
-            <div>
-                <label for="motDePasse">Confirmer le Mot de passe:</label>
-                <input type="password" id="motDePasse" v-model="motDePassevérifié">
+            <div class="form-control" :class="{ invalide: !motDePasseVerifValide}">
+                <label for="motDePasseVérifié">Confirmer le Mot de passe:</label>
+                <input type="password" id="motDePasseVérifié" v-model="motDePassevérifié" @blur="validerMotDePasseVérifié">
+                <span v-if="!motDePasseVerifValide">Veuillez entrez un mot de passe valide</span>
             </div>
-            <button>S'inscrire</button>
-            </div>
+            <button v-bind:disabled="!identifiantValide || !motDePasseValide || !nomValide || !motDePasseVerifValide">S'inscrire</button>
         </form>
     </div>
 </template>
@@ -33,13 +34,21 @@ export default {
     data: function () {
         return {
             utilisateur: '',
+            identifiantValide: true,
             nom: '',
+            nomValide: true,
             motDePasse: '',
-            motDePassevérifié: ''
+            motDePasseValide: true,
+            motDePassevérifié: '',
+            motDePasseVerifValide: true
         };
     },
     methods: {
         inscription() {
+            this.validerIdentifiant();
+            this.validerMotDePasse();
+            this.validerNom();
+            this.validerMotDePasseVérifié();
             if (!this.utilisateur || !this.nom || !this.motDePasse || !this.motDePassevérifié) {
                 alert("Veuillez remplir les champs ci-dessous");
             } else if (this.motDePasse != this.motDePassevérifié) {
@@ -53,13 +62,55 @@ export default {
             session.inscription(userDetails).then(user => {
                 alert("Bienvenue, " + this.utilisateur + ".");
                 this.$router.push('/');
-            }).catch(authError => {
-                alert(authError.message);
+            }).catch(Error => {
+                alert(Error.message);
             })
             }
             
+        },
+        validerIdentifiant() {
+            if (this.utilisateur === '') {
+                this.identifiantValide = false;
+            } else {
+                this.identifiantValide = true;
+            }
+    },
+    validerMotDePasse() {
+            if (this.motDePasse === '') {
+                this.motDePasseValide = false;
+            } else {
+                this.motDePasseValide = true;
+            }
+    },
+    validerNom() {
+        if (this.nom === '') {
+            this.nomValide = false;
+        } else {
+            this.nomValide = true;
+        }
+    },
+    validerMotDePasseVérifié() {
+        if (this.motDePassevérifié === '') {
+            this.motDePasseVerifValide = false;
+        } else {
+            this.motDePasseVerifValide = true;
         }
     }
+    },
+    watch: {
+    identifiant(nouvIdentifiant) {
+        this.validerIdentifiant();
+    },
+    motDePasse(nouvMotDePasse) {
+        this.validerMotDePasse();
+    },
+    nom(nouvNom) {
+        this.validerNom();
+    },
+    motDePasseVérifié(nouvMotDePasseVérifié) {
+        this.validerMotDePasseVérifié();
+    }
+}
 }
 </script>
 
@@ -76,5 +127,14 @@ form * {
     text-align: left;
     width: 90%;
     max-width: 80rem;
+}
+
+.form-control.invalide input,
+.form-control.invalide select {
+    border-color: red;
+}
+
+.form-control.invalide label {
+    color: red;
 }
 </style>
