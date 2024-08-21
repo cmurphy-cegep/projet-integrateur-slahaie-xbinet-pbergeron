@@ -14,7 +14,6 @@ router.get('/:id_recette', (req, res, next) => {
         return next(err);
     });
 })
-
 router.get('/', (req, res, next) => {
     recetteQueries.getAllRecettes().then(recettes => {
         res.json(recettes);
@@ -27,7 +26,6 @@ router.get('/images/:id', (req, res) => {
     const id = req.params.id;
     const inputFilePath = './images/'+id;
     sharp(inputFilePath).toBuffer().then(data=>{
-        console.log('Buffer',data);
         res.send(data);
     })
     .catch( () =>{

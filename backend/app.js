@@ -11,6 +11,7 @@ const crypto = require('crypto');
 const recetteRouter = require('./routes/recetteRouter');
 const utilisateurQueries = require("./queries/userAccountQueries");
 const noteRouter = require("./routes/noteRouter.js");
+const commentaireRouter = require('./routes/commentaireRouter.js');
 
 const app = express();
 
@@ -63,6 +64,7 @@ passport.use(new BasicStrategyModified((id_utilisateur, motDePasse, authResult) 
 
 app.use('/recettes', recetteRouter);
 app.use('/note', noteRouter);
+app.use('/commentaire', commentaireRouter);
 
 app.get('/login',
   passport.authenticate('basic', { session: false }),
