@@ -124,7 +124,6 @@ const addIngredient = async (recette, ingredient) => {
 
 const addEtape = async (recette, etape, nb) => {
     let id_etape = nb + "-" + recette.id;
-    console.log(id_etape)
     if((await pool.query(`SELECT * from etapes where id_etape = $1`, [id_etape])).rowCount != 0){
         await pool.query(`Delete from etapes where id_etape = $1`,[id_etape])
     }
