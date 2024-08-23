@@ -51,6 +51,16 @@ const session = reactive({
         this.admin = null;
         sessionStorage.removeItem('admin');
     },
+    async envoyerRecette(recette){
+        const response = await fetch("/api/recettes", {
+            method: "POST",
+            headers: {
+                ... this.getAuthHeaders(),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(recette)
+        });
+    },
     disconnect() {
         this.id_utilisateur = null;
         this.admin = null;

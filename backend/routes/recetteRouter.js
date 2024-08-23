@@ -14,6 +14,11 @@ router.get('/:id_recette', (req, res, next) => {
         return next(err);
     });
 })
+
+router.post('/', (req, res, next) => {
+    console.log(req.body);
+})
+
 router.get('/', (req, res, next) => {
     recetteQueries.getAllRecettes().then(recettes => {
         res.json(recettes);
@@ -32,6 +37,6 @@ router.get('/images/:id', (req, res) => {
         res.send(onePixelTransparentPngImage);
     });
 
-    
+
 });
 module.exports = router;
