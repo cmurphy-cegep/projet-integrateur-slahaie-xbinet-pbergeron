@@ -33,7 +33,7 @@ CREATE TABLE Utilisateurs(
 );
 
 CREATE TABLE Commentaires(
-   id_commentaire VARCHAR(250),
+   id_commentaire int NOT NULL AUTO_INCREMENT,
    commentaire TEXT,
    date_publication TIMESTAMP,
    id_recette VARCHAR(250),
