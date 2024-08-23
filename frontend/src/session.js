@@ -53,7 +53,7 @@ const session = reactive({
     },
     async envoyerRecette(recette){
         const response = await fetch("/api/recettes", {
-            method: "POST",
+            method: "PUT",
             headers: {
                 ... this.getAuthHeaders(),
                 "Content-Type": "application/json"
