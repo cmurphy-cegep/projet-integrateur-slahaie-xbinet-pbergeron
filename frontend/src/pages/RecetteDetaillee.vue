@@ -9,7 +9,7 @@
             <p>Nombre de portion: {{ portion }}</p>
         </div>
     </div>
-    <button @submit="supprimerRecette">Supprimer</button>
+    <button v-if="session" @submit="supprimerRecette">Supprimer</button>
     
     <div>
         <p v-for="parag in description">{{ parag }}</p>
