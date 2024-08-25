@@ -71,6 +71,71 @@ const getRecette = async (recette_id) => {
 exports.getRecette = getRecette;
 
 
+const updateRecette = async(recette) => {
+    await pool.query(
+        `UPDATE Recettes SET nom_recette = $1, description_courte = $2, description = $3, 
+        temps_preparation = $4, temps_cuisson = $5,
+         nb_portions = $6, image = $7 where id_recette = $8`,
+            [recette.nom, recette.description, 
+            recette.description,recette.preparation, recette.cuisson,
+            recette.portions, recette.nom + ".jpeg", recette.id])
+    await pool.query(
+        `Delete from liste_ingredient where id_recette = $1`,
+            [recette.id])
+    await pool.query(
+        `Delete from liste_etapes where id_recette = $1`,
+            [recette.id])
+    recette.ingredients.forEach((i) => addIngredient(recette, i))
+    for (let i = 0; i < recette.etapes.length; i++) {
+        addEtape(recette, recette.etapes[i], i+1);  
+    }
+}
+exports.updateRecette = updateRecette;
+
+
+const addRecette = async(recette) => {
+    await pool.query(
+    `INSERT INTO Recettes (id_recette, nom_recette, 
+        description_courte, description, temps_preparation,
+        temps_cuisson, nb_portions, image) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [recette.id, recette.nom, recette.description, 
+        recette.description,recette.preparation, recette.cuisson,
+        recette.portions, recette.nom + ".jpeg"])
+    recette.ingredients.forEach((i) => addIngredient(recette, i))
+    for (let i = 0; i < recette.etapes.length; i++) {
+        addEtape(recette, recette.etapes[i], i+1);  
+    }
+}
+exports.addRecette = addRecette;
+
+const addIngredient = async (recette, ingredient) => {
+    if((await pool.query(`SELECT * FROM ingrédients where id_ingrédients = $1`, [ingredient.nom])).rowCount == 0){
+        await pool.query(
+            `INSERT INTO ingrédients (id_ingrédients, nom_ingredient) 
+                VALUES ($1, $2)`, [ingredient.nom, ingredient.nom])
+    }
+    await pool.query(
+        `INSERT INTO liste_ingredient (id_recette, id_ingrédients,
+        quantite, mesure) 
+            VALUES ($1, $2, $3, $4)`, 
+            [recette.id, ingredient.nom, ingredient.quantier, ingredient.mesure])
+}
+
+const addEtape = async (recette, etape, nb) => {
+    let id_etape = nb + "-" + recette.id;
+    if((await pool.query(`SELECT * from etapes where id_etape = $1`, [id_etape])).rowCount != 0){
+        await pool.query(`Delete from etapes where id_etape = $1`,[id_etape])
+    }
+    await pool.query(
+        `INSERT INTO etapes (id_etape, description, ordre_etape) 
+            VALUES ($1, $2, $3)`, [id_etape, etape.text, nb])
+    await pool.query(
+        `INSERT INTO liste_etapes (id_recette, id_etape) 
+            VALUES ($1, $2)`,
+            [recette.id, id_etape])
+}
+
 const getIngredient = async (recette_id) => {
     const result = await pool.query(
         `SELECT * FROM liste_ingredient INNER JOIN ingrédients ON ingrédients.id_ingrédients = liste_ingredient.id_ingrédients
