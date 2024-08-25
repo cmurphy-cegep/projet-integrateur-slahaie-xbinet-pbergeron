@@ -43,4 +43,9 @@ router.get('/images/:id', (req, res) => {
 
 
 });
+
+router.delete('/:recetteKey', (req, res) => {
+    recetteQueries.supprimerRecette(req.params.recetteKey);
+    res.send("OK");
+})
 module.exports = router;

@@ -9,7 +9,7 @@
             <p>Nombre de portion: {{ portion }}</p>
         </div>
     </div>
-    <button v-if="session" @submit="supprimerRecette">Supprimer</button>
+    <button v-if="session" @click="supprimerRecette(recetteKey)">Supprimer</button>
     
     <div>
         <p v-for="parag in description">{{ parag }}</p>
@@ -90,13 +90,22 @@ export default {
         supprimerRecette(recetteKey) {
             if (!session) {
                 alert("Vous n'avez pas accès à ces droits!");
+            } else {
+                fetch('/api/recettes/' + recetteKey, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             }
-            fetch('api/recettes/suppression/' + recetteKey).then( response => {
+            ).then( response => {
                 if (response.ok) {
                     alert("Recette supprimée");
                     this.$router.push('/');
-                }
+                } else {
+            alert("Erreur lors de la suppression de la recette");
+        }
             })
+            }
         }
     },
     mounted() {

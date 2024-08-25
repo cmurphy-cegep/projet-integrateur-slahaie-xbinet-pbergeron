@@ -63,6 +63,7 @@ export default {
     },
     data() {
         return {
+            id: '',
             nom: '',
             cuisson: 0,
             preparation: 0,
@@ -86,6 +87,7 @@ export default {
                     }
                 })
                 .then((recette) => {
+                    this.id = recetteKey
                     this.nom = recette.nom;
                     this.image = recette.image;
                     this.preparation = recette.tempsDePrep;

@@ -169,3 +169,12 @@ const getRecetteImageContent = async () => {
     return undefined;
 };
 exports.getRecetteImageContent = getRecetteImageContent;
+
+const supprimerRecette = async (idRecette) => {
+    await pool.query(
+        `DELETE FROM recettes
+        WHERE id_recette = $1`,
+        [idRecette]
+    );
+}
+exports.supprimerRecette = supprimerRecette;

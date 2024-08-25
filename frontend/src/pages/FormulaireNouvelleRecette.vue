@@ -73,7 +73,7 @@ export default {
             portions: 0,
             description: '',
             ingredients: [{nom: "", quantier: 0, mesure: ""}],
-            etapes: [{text: ""}]
+            etapes: [{description: ""}]
         };
     },
     methods: {
@@ -86,7 +86,7 @@ export default {
             })
         },
         ajouterEtape(){
-            this.etapes.push({text: ""});
+            this.etapes.push({description: ""});
         },
         ajouterIngredient(){
             this.ingredients.push({nom: "", quantier: 0, mesure: ""})
