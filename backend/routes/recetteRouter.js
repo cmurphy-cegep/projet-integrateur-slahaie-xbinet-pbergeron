@@ -15,7 +15,7 @@ router.get('/:id_recette', (req, res, next) => {
     });
 })
 
-router.put('/', async (req, res, next) => {
+router.put('/', async (req) => {
     if((await recetteQueries.getRecette(req.body.id)) != undefined){
         recetteQueries.updateRecette(req.body);
     }else{
