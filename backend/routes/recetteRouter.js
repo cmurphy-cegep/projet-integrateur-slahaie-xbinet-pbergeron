@@ -15,8 +15,12 @@ router.get('/:id_recette', (req, res, next) => {
     });
 })
 
-router.post('/', (req, res, next) => {
-    console.log(req.body);
+router.put('/', async (req, res, next) => {
+    if((await recetteQueries.getRecette(req.body.id)) != undefined){
+        recetteQueries.updateRecette(req.body);
+    }else{
+        recetteQueries.addRecette(req.body);
+    }
 })
 
 router.get('/', (req, res, next) => {
