@@ -1,23 +1,21 @@
 const express = require('express');
 const router = express.Router();
+const asyncHandler = require('express-async-handler')
 
 const commentaireQueries = require('../queries/commentaireQueries');
 
-router.get('/:id_recette', (req, res, next) => {
-    commentaireQueries.getCommentaire(req.params.id_recette).then(commentaires => {
+router.get('/:id_recette',asyncHandler(async (req, res,) => {
+    const commentaires = await commentaireQueries.getCommentaire(req.params.id_recette);
         res.json(commentaires);
-    }).catch(error => {
-        return next(error);
-    })
-});
-router.post('/', (req, res) => {
+}));
+router.post('/', asyncHandler(async (req, res) => {
     console.log(req.body);
   const  id_recette = req.body.id_recette;
   const  id_utilisateur = req.body.id_utilisateur;
   const  commentaire = req.body.commentaire
 
-  const resCommentaire = commentaireQueries.postCommentaire(id_recette, id_utilisateur, commentaire);
-
-  res.json(resCommentaire);
-});
+    await commentaireQueries.postCommentaire(id_recette, id_utilisateur, commentaire);
+    const resCommentaires = await commentaireQueries.getCommentaire(id_recette);
+    res.json(resCommentaires);
+}));
 module.exports = router;

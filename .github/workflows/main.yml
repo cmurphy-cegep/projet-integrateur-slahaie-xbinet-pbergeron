@@ -4,6 +4,16 @@ on: push
 jobs:
   Test_job:
     runs-on: ubuntu-latest
+    services: 
+      postgres:
+        image: postgres
+
+        env:
+          POSTGRES_USER: "root_user"
+          POSTGRES_PASSWORD: 12345
+          POSTGRES_DB: projetintégrateur
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -14,10 +24,6 @@ jobs:
           cd backend 
           npm install
           npm audit fix --force
-      - name: Test
-        run: |
-          cd backend
-          npm test -- --coverage
       - name: Install frontend dependencies & build
         if: success() || failure()
         run: |
@@ -28,3 +34,20 @@ jobs:
         run: |
           cd backend
           npx eslint --config eslint.config.mjs .
+      - name: generate db
+        run: |
+          PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/createDatabase.sql
+          PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/createTables.sql
+          PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/creerUser.sql
+          PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/grantUser.sql
+          PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/insertDonnees.sql  
+        env:
+          POSTGRES_USER: "root_user"
+          POSTGRES_PASSWORD: 12345
+          POSTGRES_DB: projetintégrateur
+
+      - name: Test
+        run: |
+          cd backend
+          npm test -- --coverage  
+
