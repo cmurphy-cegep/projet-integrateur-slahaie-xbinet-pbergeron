@@ -15,11 +15,13 @@ router.get('/:id_recette', (req, res, next) => {
     });
 })
 
-router.put('/', async (req) => {
+router.put('/', async (req, res, next) => {
     if((await recetteQueries.getRecette(req.body.id)) != undefined){
         recetteQueries.updateRecette(req.body);
+        return next({ status: 200, message: "Recette mis a jour"});
     }else{
         recetteQueries.addRecette(req.body);
+        return next({ status: 200, message: "Recette ajouter"})
     }
 })
 
