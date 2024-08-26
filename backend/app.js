@@ -93,8 +93,8 @@ app.post('/inscription', (req, res, next) => {
     const salt = saltBuf.toString("base64");
 
     utilisateurQueries.getUserAccount(id_user).then( verification => {
-      console.log(verification);
-      if (id_user === verification) {
+      console.log(verification)
+      if (id_user === verification.id_utilisateur) {
         return next({ status: 500, message: "compte existant"})
       } else {
         crypto.pbkdf2(password, salt, 100000, 64, "sha512", (err, derivedKey) => {

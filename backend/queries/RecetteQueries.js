@@ -78,7 +78,7 @@ const updateRecette = async(recette) => {
          nb_portions = $6, image = $7 where id_recette = $8`,
             [recette.nom, recette.description, 
             recette.description,recette.preparation, recette.cuisson,
-            recette.portions, recette.nom + ".jpeg", recette.id])
+            recette.portions, recette.id + ".jpeg", recette.id])
     await pool.query(
         `Delete from liste_ingredient where id_recette = $1`,
             [recette.id])
@@ -101,7 +101,7 @@ const addRecette = async(recette) => {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         [recette.id, recette.nom, recette.description, 
         recette.description,recette.preparation, recette.cuisson,
-        recette.portions, recette.nom + ".jpeg"])
+        recette.portions, recette.id + ".jpeg"])
     recette.ingredients.forEach((i) => addIngredient(recette, i))
     for (let i = 0; i < recette.etapes.length; i++) {
         addEtape(recette, recette.etapes[i], i+1);  
@@ -129,7 +129,7 @@ const addEtape = async (recette, etape, nb) => {
     }
     await pool.query(
         `INSERT INTO etapes (id_etape, description, ordre_etape) 
-            VALUES ($1, $2, $3)`, [id_etape, etape.text, nb])
+            VALUES ($1, $2, $3)`, [id_etape, etape.description, nb])
     await pool.query(
         `INSERT INTO liste_etapes (id_recette, id_etape) 
             VALUES ($1, $2)`,
@@ -169,3 +169,12 @@ const getRecetteImageContent = async () => {
     return undefined;
 };
 exports.getRecetteImageContent = getRecetteImageContent;
+
+const supprimerRecette = async (idRecette) => {
+    await pool.query(
+        `DELETE FROM recettes
+        WHERE id_recette = $1`,
+        [idRecette]
+    );
+}
+exports.supprimerRecette = supprimerRecette;

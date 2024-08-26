@@ -1,7 +1,7 @@
 <template>
     <tr>
         <td>
-            <input type="text" v-model="this.etapes[this.id].text">
+            <input type="text" v-model="this.etapes[this.id].description">
         </td>
         <td>
             <button @click="up">▲</button>

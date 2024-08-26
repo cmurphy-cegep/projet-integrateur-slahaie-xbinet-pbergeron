@@ -4,7 +4,7 @@
             <input type="text" v-model="this.ingredient[this.id].nom">
         </td>
         <td>
-            <input type="number" v-model="this.ingredient[this.id].quantier">
+            <input min="0" step=".01" type="number" v-model="this.ingredient[this.id].quantier">
         </td>
         <td>
             <input type="text" v-model="this.ingredient[this.id].mesure">

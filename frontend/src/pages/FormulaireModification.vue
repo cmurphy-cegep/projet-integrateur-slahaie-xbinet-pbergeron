@@ -1,13 +1,9 @@
 <template>
     <div class="boxed-left">
-        <h2>Nouvelle Recette</h2>
+        <h2>Modification de la Recette: {{ nom }}</h2>
         <form @submit.prevent="">
             <div class="form-control">
-                <label for="id">Id de la rectte</label>
-                <input id="id" v-model="id">
-            </div>
-            <div class="form-control">
-                <label for="nom">Nom de la rectte</label>
+                <label for="nom">Nom de la recette</label>
                 <input id="nom" v-model="nom">
             </div>
             <div class="form-control">
@@ -27,11 +23,11 @@
                 <textarea style="width: 476px; height: 114px;" id="description" v-model="description"></textarea>
             </div>
             <table>
-                <caption>Ingredient</caption>
+                <caption>Ingrédient</caption>
                 <tr>
                     <th>Nom</th>
-                    <th>Quantiter</th>
-                    <th>Uniter</th>
+                    <th>Quantité</th>
+                    <th>Unité</th>
                 </tr>
                 <Ingredient v-for="(ingredient, index) in ingredients" :id="index" :ingredient="ingredients"></Ingredient>
                 <tr>
@@ -72,11 +68,38 @@ export default {
             preparation: 0,
             portions: 0,
             description: '',
-            ingredients: [{nom: "", quantier: 0, mesure: ""}],
+            ingredients: [{nom: "", quantite: 0, mesure: ""}],
             etapes: [{description: ""}]
         };
     },
     methods: {
+        chargerRecette(recetteKey) {
+            fetch("/api/recettes/" + recetteKey)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        if (response.status === 404) {
+                            throw new Error("Recettes introuvable");
+                        }
+                        throw new Error("Erreur HTTP " + response.status);
+                    }
+                })
+                .then((recette) => {
+                    this.id = recetteKey
+                    this.nom = recette.nom;
+                    this.image = recette.image;
+                    this.preparation = recette.tempsDePrep;
+                    this.cuisson = recette.tempsDeCuit;
+                    this.portions = recette.portion;
+                    this.description = recette.description;
+                    this.ingredients = recette.ingredients;
+                    this.etapes = recette.etapes;
+
+                }).catch((error) => {
+                    console.log("Erreur", error);
+                });
+        },
         envoyer() {
             session.envoyerRecette(this.$data).then(() => {
                 alert("Recette envoyer");
@@ -90,6 +113,17 @@ export default {
         },
         ajouterIngredient(){
             this.ingredients.push({nom: "", quantier: 0, mesure: ""})
+        }
+    },
+    mounted() {
+        this.chargerRecette(this.recetteKey);
+    },
+    props: {
+        recetteKey: String
+    },
+    computed: {
+        imageSrc() {
+            return addApiPrefixToPath("/recettes/"+this.image);
         }
     }
 }
