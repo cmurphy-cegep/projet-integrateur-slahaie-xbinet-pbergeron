@@ -3,11 +3,11 @@
         <h2>Nouvelle Recette</h2>
         <form @submit.prevent="">
             <div class="form-control">
-                <label for="id">Id de la rectte</label>
+                <label for="id">Id de la recette</label>
                 <input id="id" v-model="id">
             </div>
             <div class="form-control">
-                <label for="nom">Nom de la rectte</label>
+                <label for="nom">Nom de la recette</label>
                 <input id="nom" v-model="nom">
             </div>
             <div class="form-control">
