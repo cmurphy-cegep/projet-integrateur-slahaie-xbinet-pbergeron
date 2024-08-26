@@ -24,10 +24,6 @@ jobs:
           cd backend 
           npm install
           npm audit fix --force
-      - name: Test
-        run: |
-          cd backend
-          npm test -- --coverage
       - name: Install frontend dependencies & build
         if: success() || failure()
         run: |
@@ -44,8 +40,14 @@ jobs:
           PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/createTables.sql
           PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/creerUser.sql
           PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/grantUser.sql
-          PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/insertDonnees.sql
+          PGPASSWORD=12345 psql -h localhost -U root_user -d projetintégrateur -f Base-de-données/insertDonnees.sql  
         env:
           POSTGRES_USER: "root_user"
           POSTGRES_PASSWORD: 12345
           POSTGRES_DB: projetintégrateur
+
+      - name: Test
+        run: |
+          cd backend
+          npm test -- --coverage  
+
