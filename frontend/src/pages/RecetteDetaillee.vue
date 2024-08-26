@@ -1,6 +1,7 @@
 <template>
     <h2>{{nom}}</h2>
     <div v-if="session"><router-link :to="'/modification/' + this.recetteKey">Éditer</router-link></div>
+    <div><button v-if="session" @click="supprimerRecette(recetteKey)">Supprimer</button></div>
     <div class="infoGeneral">
         <img v-bind:src= "imageSrc"/>
         <div>
@@ -9,7 +10,6 @@
             <p>Nombre de portion: {{ portion }}</p>
         </div>
     </div>
-    <button v-if="session" @click="supprimerRecette(recetteKey)">Supprimer</button>
     
     <div>
         <p v-for="parag in description">{{ parag }}</p>
