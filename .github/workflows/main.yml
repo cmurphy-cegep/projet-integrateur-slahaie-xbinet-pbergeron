@@ -40,11 +40,11 @@ jobs:
           npx eslint --config eslint.config.mjs .
       - name: generate db
         run: |
-          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintegrateur -f Base-de-données/createDatabase.sql
-          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintegrateur -f Base-de-données/createTables.sql
-          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintegrateur -f Base-de-données/creerUser.sql
-          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintegrateur -f Base-de-données/grantUsersql
-          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintegrateur -f Base-de-données/insertDonnees.sql
+          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintégrateur -f Base-de-données/createDatabase.sql
+          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintégrateur -f Base-de-données/createTables.sql
+          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintégrateur -f Base-de-données/creerUser.sql
+          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintégrateur -f Base-de-données/grantUsersql
+          PGPASSWORD=12345 psql -h localhost -U Root_user -d projetintégrateur -f Base-de-données/insertDonnees.sql
         env:
           POSTGRES_USER: "Root_user"
           POSTGRES_PASSWORD: 12345
