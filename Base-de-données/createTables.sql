@@ -33,12 +33,11 @@ CREATE TABLE Utilisateurs(
 );
 
 CREATE TABLE Commentaires(
-   id_commentaire int NOT NULL AUTO_INCREMENT,
+   id_commentaire integer primary key generated always as identity,
    commentaire TEXT,
    date_publication TIMESTAMP,
    id_recette VARCHAR(250),
    id_utilisateurs VARCHAR(250),
-   PRIMARY KEY(id_commentaire),
    FOREIGN KEY(id_recette) REFERENCES Recettes(id_recette) ON DELETE CASCADE,
    FOREIGN KEY(id_utilisateurs) REFERENCES Utilisateurs(id_utilisateurs) ON DELETE CASCADE
 );
