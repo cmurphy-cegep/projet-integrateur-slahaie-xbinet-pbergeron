@@ -19,9 +19,8 @@
                 <input type="number" id="portions" v-model="portions">
             </div>
             <div class="form-control">
-                <label for="description">Description</label>
-                <p v-for="parag in description">{{ parag }}</p>
-                <Textarea id="description" v-model="description"></Textarea>
+                <p>Description</p>
+                <textarea style="width: 476px; height: 114px;" id="description" v-model="description"></textarea>
             </div>
             <table>
                 <caption>Ingrédient</caption>
@@ -93,7 +92,7 @@ export default {
                     this.preparation = recette.tempsDePrep;
                     this.cuisson = recette.tempsDeCuit;
                     this.portions = recette.portion;
-                    this.description = recette.description.split('\n');
+                    this.description = recette.description;
                     this.ingredients = recette.ingredients;
                     this.etapes = recette.etapes;
 
