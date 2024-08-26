@@ -32,7 +32,7 @@ CREATE TABLE Utilisateurs(
    PRIMARY KEY(id_utilisateurs)
 );
 
-CREATE TABLE Commentaires(
+CREATE TABLE commentaires(
    id_commentaire integer primary key generated always as identity,
    commentaire TEXT,
    date_publication TIMESTAMP,
