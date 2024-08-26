@@ -313,3 +313,6 @@ Insert INTO Recettes (id_recette, nom_recette, description_courte,
  ('patate25', 'Bob Gratton', 'alpfSi7SgIWTS3FHGgmrC7kej3Uq7x+2eEbd4CbuZl8VNGHFDaewNXnHQ2MKgc2AokeNsurYE8p7UDTtppuiaw==',
  'JwVATh3rRC3VnXzNo0/0ZA==', false);
 
+ INSERT INTO commentaires (commentaire, date_publication,id_recette,id_utilisateurs)
+ VALUES ('Premier Commentaire', '2024-08-26','Spaghetti_Carbonara','admin');
+
