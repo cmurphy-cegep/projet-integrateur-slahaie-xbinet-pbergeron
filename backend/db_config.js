@@ -1,5 +1,5 @@
 module.exports={
-    user: 'root_user',
+    user: 'Root_user',
     host: 'localhost',
     port: '5432',
     database: 'projetintégrateur',
