@@ -2,9 +2,10 @@
     <div class="boxed-left">
         <h2>Modification de la Recette: {{ nom }}</h2>
         <form @submit.prevent="">
-            <div class="form-control">
+            <div class="form-control" :class="{invalide: !nomValide}">
                 <label for="nom">Nom de la recette</label>
-                <input id="nom" v-model="nom">
+                <input id="nom" v-model="nom" @blur="validerNom">
+                <span v-if="!nomValide">Veuillez entrez un nom de recette</span>
             </div>
             <div class="form-control">
                 <label for="preparation">Temps de préparation en minutes</label>
@@ -29,7 +30,8 @@
                     <th>Quantité</th>
                     <th>Unité</th>
                 </tr>
-                <Ingredient v-for="(ingredient, index) in ingredients" :id="index" :ingredient="ingredients"></Ingredient>
+                <p v-if="ingredients.length == 0">Aucun ingrédient</p>
+                <Ingredient v-else v-for="(ingredient, index) in ingredients" :id="index" :ingredient="ingredients"></Ingredient>
                 <tr>
                     <td>
                         <button @click="ajouterIngredient">Ajouter</button>
@@ -38,7 +40,8 @@
             </table>
             <table>
                 <caption>Etape</caption>
-                <Etape v-for="(etape, index) in etapes" :id="index" :etapes="this.etapes"></Etape>
+                <p v-if="etapes.length == 0">Aucune étape</p>
+                <Etape v-else v-for="(etape, index) in etapes" :id="index" :etapes="this.etapes"></Etape>
                 <tr>
                     <td>
                         <button @click="ajouterEtape">Ajouter</button>
@@ -64,12 +67,13 @@ export default {
         return {
             id: '',
             nom: '',
+            nomValide: true,
             cuisson: 0,
             preparation: 0,
             portions: 0,
             description: '',
-            ingredients: [{nom: "", quantite: 0, mesure: ""}],
-            etapes: [{description: ""}]
+            ingredients: [],
+            etapes: []
         };
     },
     methods: {
@@ -101,18 +105,34 @@ export default {
                 });
         },
         envoyer() {
+            if (!this.nomValide) {
+                alert("Vous devez entrer un nom de recette");
+            } else {
             session.envoyerRecette(this.$data).then(() => {
                 alert("Recette envoyer");
                 this.$router.push('/');
             }).catch(authError => {
                 alert(authError.message);
             })
+        }
         },
         ajouterEtape(){
             this.etapes.push({description: ""});
         },
         ajouterIngredient(){
             this.ingredients.push({nom: "", quantier: 0, mesure: ""})
+        },
+        validerNom() {
+            if (this.nom === '') {
+                this.nomValide = false;
+            } else {
+                this.nomValide = true;
+            }
+        }
+    },
+    watch: {
+        nom(nouvNom) {
+            this.validerNom();
         }
     },
     mounted() {

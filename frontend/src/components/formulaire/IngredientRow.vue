@@ -31,6 +31,8 @@ export default {
         supprimer(){
             if(this.ingredient.length > 1){
                 this.ingredient.splice(this.id, 1);
+            } else if (this.ingredient.length = 1) {
+                alert("Vous devez avoir au moins un ingrédient");
             }
         },
         up(){

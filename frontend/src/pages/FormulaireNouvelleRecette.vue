@@ -2,13 +2,15 @@
     <div class="boxed-left">
         <h2>Nouvelle Recette</h2>
         <form @submit.prevent="">
-            <div class="form-control">
+            <div class="form-control" :class="{invalide: !idValide}">
                 <label for="id">Id de la recette</label>
-                <input id="id" v-model="id">
+                <input id="id" v-model="id" @blur="validerId">
+                <span v-if="!idValide">Veuillez entrez un identifiant de recette</span>
             </div>
-            <div class="form-control">
+            <div class="form-control" :class="{invalide: !nomValide}">
                 <label for="nom">Nom de la recette</label>
-                <input id="nom" v-model="nom">
+                <input id="nom" v-model="nom" @blur="validerNom">
+                <span v-if="!nomValide">Veuillez entrez un nom de recette</span>
             </div>
             <div class="form-control">
                 <label for="preparation">Temps de préparation en minutes</label>
@@ -30,19 +32,22 @@
                 <caption>Ingredient</caption>
                 <tr>
                     <th>Nom</th>
-                    <th>Quantiter</th>
-                    <th>Uniter</th>
+                    <th>Quantité</th>
+                    <th>Unité</th>
                 </tr>
-                <Ingredient v-for="(ingredient, index) in ingredients" :id="index" :ingredient="ingredients"></Ingredient>
+                <p v-if="ingredients.length == 0">Aucun ingrédient</p>
+                <Ingredient v-else v-for="(ingredient, index) in ingredients" :id="index" :ingredient="ingredients"></Ingredient>
                 <tr>
                     <td>
                         <button @click="ajouterIngredient">Ajouter</button>
                     </td>
                 </tr>
             </table>
+            
             <table>
                 <caption>Etape</caption>
-                <Etape v-for="(etape, index) in etapes" :id="index" :etapes="this.etapes"></Etape>
+                <p v-if="etapes.length == 0">Aucune étape</p>
+                <Etape v-else v-for="(etape, index) in etapes" :id="index" :etapes="this.etapes"></Etape>
                 <tr>
                     <td>
                         <button @click="ajouterEtape">Ajouter</button>
@@ -67,29 +72,61 @@ export default {
     data() {
         return {
             id: '',
+            idValide: true,
             nom: '',
+            nomValide: true,
             cuisson: 0,
             preparation: 0,
             portions: 0,
             description: '',
-            ingredients: [{nom: "", quantier: 0, mesure: ""}],
-            etapes: [{description: ""}]
+            ingredients: [],
+            ingredientsValide: true,
+            etapes: []
         };
     },
     methods: {
         envoyer() {
+            if (!this.idValide || !this.nomValide) {
+                alert("Information non valides");
+            }
+            if (this.etapes.length == 0 || this.ingredients.length == 0 ) {
+                alert("Vous devez avoir au moins un ingédient et une étape");
+            } else {
             session.envoyerRecette(this.$data).then(() => {
                 alert("Recette envoyer");
                 this.$router.push('/');
             }).catch(authError => {
                 alert(authError.message);
             })
+        }
         },
         ajouterEtape(){
             this.etapes.push({description: ""});
         },
         ajouterIngredient(){
             this.ingredients.push({nom: "", quantier: 0, mesure: ""})
+        },
+        validerId() {
+            if (this.id === '') {
+                this.idValide = false;
+            } else {
+                this.idValide = true;
+            }
+        },
+        validerNom() {
+            if (this.nom === '') {
+                this.nomValide = false;
+            } else {
+                this.nomValide = true;
+            }
+        }
+    },
+    watch: {
+        id(nouvId) {
+            this.validerId();
+        },
+        nom(nouvNom) {
+            this.validerNom();
         }
     }
 }

@@ -307,6 +307,8 @@ Insert INTO Recettes (id_recette, nom_recette, description_courte,
  ('crèpe_yogourt', '3-crèpe_yogourt'),
  ('crèpe_yogourt', '4-crèpe_yogourt');
 
+ /*mot de passe admin: 12345*/
+ /*mot de passe patate25: 2468*/
  INSERT INTO utilisateurs (id_utilisateurs, nom_utilisateur, password_hash, password_salt, admin)
  VALUES ('admin', 'admin', 'ukokHmbBGOnibmWklbgCnPfHjaIujFGvM6Rp8zhjQ+WPoLdkyzYrw/g6FN14wLQHWcMD6qW0cRuycyBWIKH7EQ==',
  '7juvH7yAXDRxpHzakmJSXg==', true),

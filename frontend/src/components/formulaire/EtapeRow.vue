@@ -26,6 +26,8 @@ export default {
         supprimer(){
             if(this.etapes.length > 1){
                 this.etapes.splice(this.id, 1);
+            } else if (this.etapes.length = 1) {
+                alert("Vous devez avoir au moins une étape");
             }
         },
         up(){
