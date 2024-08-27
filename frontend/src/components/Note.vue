@@ -32,7 +32,7 @@ export default {
                 if (!noteRecu) {
                     this.note = 0;
                 } else {
-                    this.note = noteRecu;
+                    this.note = noteRecu.toFixed(1);
                 }
             }).catch((error) => {
                 console.log("Erreur", error);

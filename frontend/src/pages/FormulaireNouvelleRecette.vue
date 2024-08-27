@@ -54,7 +54,7 @@
                     </td>
                 </tr>
             </table>
-            <button @click="envoyer">Envoyer</button>
+            <button v-bind:disabled="!nomValide || !ingredientsValide || !etapesValide" @click="envoyer">Envoyer</button>
         </form>
     </div>
 </template>
@@ -81,16 +81,23 @@ export default {
             description: '',
             ingredients: [],
             ingredientsValide: true,
-            etapes: []
+            etapes: [],
+            etapesValide: true
         };
     },
     methods: {
         envoyer() {
-            if (!this.idValide || !this.nomValide) {
+            if (!this.idValide || !this.nomValide || !this.ingredientsValide || !this.etapesValide) {
                 alert("Information non valides");
+                this.idValide = false;
+                this.nomValide = false;
+                this.ingredientsValide = false;
+                this.etapesValide = false;
             }
             if (this.etapes.length == 0 || this.ingredients.length == 0 ) {
                 alert("Vous devez avoir au moins un ingédient et une étape");
+                this.ingredientsValide = false;
+                this.etapesValide = false;
             } else {
             session.envoyerRecette(this.$data).then(() => {
                 alert("Recette envoyer");
@@ -119,6 +126,20 @@ export default {
             } else {
                 this.nomValide = true;
             }
+        },
+        valideringredients() {
+            if (this.ingredients.entries.arguments == '' || null) {
+                this.ingredientsValide = false;
+            } else {
+                this.ingredientsValide = true;
+            }
+        },
+        validerEtapes() {
+            if (this.etapes.entries.arguments == '' || null) {
+                this.etapesValide = false;
+            } else {
+                this.etapesValide = true;
+            }
         }
     },
     watch: {
@@ -127,6 +148,12 @@ export default {
         },
         nom(nouvNom) {
             this.validerNom();
+        },
+        ingredient(nouvIngredient) {
+            this.valideringredients();
+        },
+        etape(nouvEtape) {
+            this.validerEtapes();
         }
     }
 }
