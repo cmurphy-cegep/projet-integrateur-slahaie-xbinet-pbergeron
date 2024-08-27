@@ -1,4 +1,4 @@
-CREATE TABLE Recettes(
+CREATE TABLE recettes(
    id_recette VARCHAR(250),
    nom_recette VARCHAR(250),
    description_courte TEXT,
@@ -10,7 +10,7 @@ CREATE TABLE Recettes(
    PRIMARY KEY(id_recette)
 );
 
-CREATE TABLE Ingrédients(
+CREATE TABLE ingrédients(
    id_ingrédients VARCHAR(250),
    nom_ingredient VARCHAR(250),
    PRIMARY KEY(id_ingrédients)
@@ -23,7 +23,7 @@ CREATE TABLE etapes(
    PRIMARY KEY(id_etape)
 );
 
-CREATE TABLE Utilisateurs(
+CREATE TABLE utilisateurs(
    id_utilisateurs VARCHAR(250),
    nom_utilisateur VARCHAR(250),
    password_hash TEXT,
@@ -32,7 +32,7 @@ CREATE TABLE Utilisateurs(
    PRIMARY KEY(id_utilisateurs)
 );
 
-CREATE TABLE Commentaires(
+CREATE TABLE commentaires(
    id_commentaire integer primary key generated always as identity,
    commentaire TEXT,
    date_publication TIMESTAMP,
@@ -60,7 +60,7 @@ CREATE TABLE liste_etapes(
    FOREIGN KEY(id_etape) REFERENCES etapes(id_etape) ON DELETE CASCADE
 );
 
-CREATE TABLE Note(
+CREATE TABLE note(
    id_recette VARCHAR(250),
    id_utilisateurs VARCHAR(250),
    note INT,

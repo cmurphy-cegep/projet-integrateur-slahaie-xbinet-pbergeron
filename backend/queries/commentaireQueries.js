@@ -12,13 +12,13 @@ const postCommentaire = async (id_recette, id_utilisateur, commentaire) => {
 
     const date = `${year}-${month}-${day} ${hours}:${minutes}`;
 
-    await pool.query(
-        `insert into commentaires (commentaire,date_publication,id_recette,id_utilisateurs)
-        values($1,$2,$3,$4)`, 
+   let result = await pool.query(
+        `INSERT INTO commentaires (commentaire,date_publication,id_recette,id_utilisateurs)
+        VALUES($1,$2,$3,$4) RETURNING id_commentaire`, 
         [commentaire, date, id_recette, id_utilisateur]
     );
-
-    return getCommentaire(id_recette);
+    let id_commentaire = result.rows[0].id_commentaire;
+    return id_commentaire
 
 };
 exports.postCommentaire = postCommentaire;
