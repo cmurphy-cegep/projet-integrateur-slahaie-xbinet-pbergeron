@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('./app');
 const pool = require('./queries/DBPool.js');
-jest.mock('./queries/DBPool.js');
 
 
 describe("e2e tests", function () {
@@ -21,69 +20,6 @@ describe("e2e tests", function () {
     })
 
     test("Page Accueil", async () => {
-        pool.query.mockResolvedValue({
-            rows: [
-            {
-              id_recette: 'biscuit_chocolat',
-              nom_recette: 'Biscuits aux pépites de chocolat',
-              description_courte: 'Découvrez des cookies aux pépites de chocolat irrésistibles, parfaits pour combler vos envies de douceur...',
-              image: 'biscuit_chocolat.jpeg'
-            },
-            {
-              id_recette: 'crèpe_yogourt',
-              nom_recette: 'Crèpes aux yogourt grec',
-              description_courte: 'Savourez des pancakes légers et moelleux, enrichis de yaourt grec pour une texture délicieusement tendre...',
-              image: 'crèpe_yogourt.jpeg'
-            },
-            {
-              id_recette: 'Salade_caprese',
-              nom_recette: 'Salade caprese',
-              description_courte: 'Découvrez la fraîcheur de la salade Caprese, une entrée classique et élégante qui met en avant la simplicité des ingrédients...',
-              image: 'Salade_caprese.jpeg'
-            },
-            {
-              id_recette: 'Salade_Quinoa',
-              nom_recette: 'Salade de quinoa avec vinaigrette au citron',
-              description_courte: "Cette salade de quinoa est légère et citronnée, idéale pour un excellent repas d'été...",
-              image: 'Salade_Quinoa.jpeg'
-            },
-            {
-              id_recette: 'Saumon_citron_aneth',
-              nom_recette: 'Saumon au citron et aneth',
-              description_courte: "Savourez un saumon délicatement parfumé, cuit au four avec des tranches de citron et de l'aneth frais.",
-              image: 'saumon_citron_aneth.jpeg'
-            },
-            {
-              id_recette: 'Saute_legumes',
-              nom_recette: 'Sauté de légumes',
-              description_courte: 'Découvrez une recette savoureuse et rapide à réaliser avec un mélange de légumes frais sautés...',
-              image: 'saute_legumes.jpeg'
-            },
-            {
-              id_recette: 'soupe_poulet_legume',
-              nom_recette: 'Soupe au poulet et légumes',
-              description_courte: 'Savourez une soupe réconfortante et nourrissante, parfaite pour les jours frais...',
-              image: 'soupe_poulet_legume.jpeg'
-            },
-            {
-              id_recette: 'Spaghetti_Carbonara',
-              nom_recette: 'Spaghetti Carbonara',
-              description_courte: 'Ce spaghetti à la carbonara est un plat de spaghettis « bacon et œuf » classique et très riche, idéal à servir en compagnie...',
-              image: 'Spaghetti_Carbonara.jpeg'
-            },
-            {
-              id_recette: 'Tacos_Boeuf',
-              nom_recette: 'Tacos au boeuf',
-              description_courte: "Ces tacos au bœuf sont une option délicieuse et pratique pour un repas rapide. La viande de bœuf hachée est cuite avec des oignons et de l'ail, puis assaisonnée avec un mélange spécial pour tacos...",
-              image: 'Tacos_Boeuf.jpeg'
-            },
-            {
-              id_recette: 'Tikka_Masala',
-              nom_recette: 'Poulet Tikka Masala',
-              description_courte: 'Poulet tikka masala simplifié avec cette recette au goût délicieux...',
-              image: 'Tikka_Masala.jpeg'
-            }
-          ]})
 
           let expected = [
             {
@@ -153,23 +89,127 @@ describe("e2e tests", function () {
           expect(response.body).toStrictEqual(expected)
     })
 
+    test("envoyer une note", async () => {
+      const note = {
+        id_recette: "biscuit_chocolat",
+        id_utilisateur: "patate25",
+        note: "3"
+      }
+
+      const response = await request(app)
+      .post('/note')
+      .send(note)
+      .set('Content-Type', 'application/json');
+
+      expect(response.status).toBe(200);
+    })
+
+
     test("chercher une note", async () => {
-        pool.query.mockResolvedValue({
-            rows: [
-              {
-                note: 5
-            },
-          {
-            note: 3
-          },
-        {
-          note: 1
-        }]
-        })
 
         const response = await request(app).get('/note/'+ "biscuit_chocolat");
         expect(response.status).toBe(200);
         expect(response.body).toBe(3);
+        pool.query('DELETE FROM note WHERE id_utilisateurs = $1', ['patate25']);
+    })
+
+    test("envoyer un commentaire", async () => {
+
+      const envoiCommentaire = {
+        id_recette: "biscuit_chocolat",
+        id_utilisateur: "patate25",
+        commentaire: "Superbe recette"
+      }
+
+      const response = await request(app)
+      .post('/commentaire')
+      .send(envoiCommentaire)
+      .set('Content-Type', 'application/json');
+
+      expect(response.status).toBe(200);
+      pool.query('DELETE FROM commentaires WHERE id_utilisateurs = $1', ['patate25']);
+    })
+
+    test("login avec bon credentials", async () => {
+      const user = {
+        id_utilisateur: "admin",
+        motDePasse: "12345"
+      }
+
+      const response = await request(app)
+      .get('/login')
+      .set('Authorization', `Basic ${Buffer.from(`${user.id_utilisateur}:${user.motDePasse}`).toString('base64')}`)
+
+      expect(response.status).toBe(200);
+    })
+
+    test("login avec mauvais credentials", async () => {
+      const user = {
+        id_utilisateur: "admin",
+        motDePasse: "123"
+      }
+
+      const response = await request(app)
+      .get('/login')
+      .set('Authorization', `Basic ${Buffer.from(`${user.id_utilisateur}:${user.motDePasse}`).toString('base64')}`)
+
+      expect(response.status).toBe(401);
+    })
+
+    test("Inscription", async () => {
+      const user = {
+        id_utilisateur: "patate_pouelle",
+        nom: "bob gratton",
+        motDePasse: "123",
+        admin: false
+      }
+
+      const response = await request(app)
+      .post('/inscription')
+      .send(user)
+      .set('Content-Type', 'application/json')
+
+      expect(response.status).toBe(200);
+      pool.query('DELETE FROM utilisateurs WHERE id_utilisateurs = $1', ['patate_pouelle']);
+    })
+
+    test("recette complète", async () => {
+      const response = await request(app).get('/recettes/' + "crèpe_yogourt");
+
+      expect(response.status).toBe(200);
+    })
+
+    test("fausse recette", async () => {
+      const response = await request(app).get('/recettes/' + "patate_roti");
+
+      expect(response.status).toBe(500);
+    })
+
+    test("fetch image", async () => {
+      const response = await request(app).get('/recettes/images/' + "crèpe_yogourt");
+      
+      expect(response.status).toBe(200);
+    })
+
+    test("nouvelle recette", async () => {
+      const newRecipe = {
+        id: 'patate',
+        nom_recette: 'patate roti',
+        cuisson: 30,
+        preparation: 20,
+        portions: 4,
+        description: 'Une recette test de patate roti',
+        ingredients: [{ nom: 'patate', quantier: 100, mesure: 'g' }],
+        etapes: [{ description: 'cuire patate' }]
+    };
+
+    const response = await request(app)
+    .put('/recettes')
+    .send(newRecipe)
+    .set('Content-Type', 'application/json')
+
+    expect(response.status).toBe(200);
+    pool.query('DELETE FROM recettes WHERE id_recette = $1', ['patate']);
     })
 
 })
