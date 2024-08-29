@@ -32,7 +32,7 @@ export default {
                 if (!noteRecu) {
                     this.note = 0;
                 } else {
-                    this.note = noteRecu;
+                    this.note = noteRecu.toFixed(1);
                 }
             }).catch((error) => {
                 console.log("Erreur", error);
@@ -60,9 +60,9 @@ export default {
                     alert("Note envoyé.")
                     this.chargerNote(recetteKey);
                 } else {
-                    if (response.status == 404) {
+                    if (response.status == 300) {
                         alert("Vous avez déjà noter cette recette.")
-                    } else {
+                    } else  {
                         alert("Erreur lors de l'envoi de la note.")
                     }
                 }

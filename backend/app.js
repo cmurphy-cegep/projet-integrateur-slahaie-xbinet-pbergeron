@@ -11,6 +11,7 @@ const crypto = require('crypto');
 const recetteRouter = require('./routes/recetteRouter');
 const utilisateurQueries = require("./queries/userAccountQueries");
 const noteRouter = require("./routes/noteRouter.js");
+const commentaireRouter = require('./routes/commentaireRouter.js');
 
 const app = express();
 
@@ -65,6 +66,7 @@ passport.use(new BasicStrategyModified((id_utilisateur, motDePasse, authResult) 
 
 app.use('/recettes', recetteRouter);
 app.use('/note', noteRouter);
+app.use('/commentaire', commentaireRouter);
 
 app.get('/login',
   passport.authenticate('basic', { session: false }),
@@ -92,24 +94,29 @@ app.post('/inscription', (req, res, next) => {
     const saltBuf = crypto.randomBytes(16);
     const salt = saltBuf.toString("base64");
 
-    const verif = utilisateurQueries.getUserAccount(id_user);
+    utilisateurQueries.getUserAccount(id_user).then( verification => {
+      console.log(verification)
+      if (verification != undefined) {
+        return next({ status: 500, message: "compte existant"})
+      } else {
+        crypto.pbkdf2(password, salt, 100000, 64, "sha512", (err, derivedKey) => {
+          if (err) throw err;
+    
+          const password_hash = derivedKey.toString("base64");
+          
+          utilisateurQueries.createUserAccount(id_user,user,password_hash,salt).then(userReturn => {
 
-    if (id_user == verif.userId) {
-      return next({ status: 500, message: "compte existant"})
-    }
+            res.json(userReturn);
+          });
+        }
+        
+    );
+  }
+  }
+)
 
     
-      crypto.pbkdf2(password, salt, 100000, 64, "sha512", (err, derivedKey) => {
-        if (err) throw err;
-  
-        const password_hash = derivedKey.toString("base64");
-        
-        const userReturn = utilisateurQueries.createUserAccount(id_user,user,password_hash,salt);
-  
-        res.json(userReturn);
-      }
       
-  );
     }
 
     

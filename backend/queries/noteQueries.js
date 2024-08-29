@@ -9,7 +9,7 @@ const postNote = async (id_recette, id_utilisateur, note) => {
         [id_recette, id_utilisateur, note]
     );
 
-    return postNote(id_recette);
+    return getNote(id_recette);
 
 };
 exports.postNote = postNote;

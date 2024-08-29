@@ -5,7 +5,7 @@ DELETE FROM etapes;
 DELETE FROM liste_etapes;
 DELETE FROM utilisateurs;
 
-Insert INTO Recettes (id_recette, nom_recette, description_courte,
+Insert INTO recettes (id_recette, nom_recette, description_courte,
  description, temps_preparation, temps_cuisson, nb_portions, image)
  VALUES 
  ('Spaghetti_Carbonara', 'Spaghetti Carbonara', 'Ce spaghetti à la carbonara est un plat de spaghettis « bacon et œuf » classique et très riche, idéal à servir en compagnie...',
@@ -307,9 +307,14 @@ Insert INTO Recettes (id_recette, nom_recette, description_courte,
  ('crèpe_yogourt', '3-crèpe_yogourt'),
  ('crèpe_yogourt', '4-crèpe_yogourt');
 
+ /*mot de passe admin: 12345*/
+ /*mot de passe patate25: 2468*/
  INSERT INTO utilisateurs (id_utilisateurs, nom_utilisateur, password_hash, password_salt, admin)
  VALUES ('admin', 'admin', 'ukokHmbBGOnibmWklbgCnPfHjaIujFGvM6Rp8zhjQ+WPoLdkyzYrw/g6FN14wLQHWcMD6qW0cRuycyBWIKH7EQ==',
  '7juvH7yAXDRxpHzakmJSXg==', true),
  ('patate25', 'Bob Gratton', 'alpfSi7SgIWTS3FHGgmrC7kej3Uq7x+2eEbd4CbuZl8VNGHFDaewNXnHQ2MKgc2AokeNsurYE8p7UDTtppuiaw==',
  'JwVATh3rRC3VnXzNo0/0ZA==', false);
+
+ INSERT INTO commentaires (commentaire, date_publication,id_recette,id_utilisateurs)
+ VALUES ('Premier Commentaire', '2024-08-26','Spaghetti_Carbonara','admin');
 

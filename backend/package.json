@@ -12,6 +12,7 @@
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "^4.19.2",
+    "express-async-handler": "^1.2.0",
     "http-errors": "~1.6.3",
     "lint": "^1.1.2",
     "luxon": "^3.3.0",
@@ -41,7 +42,6 @@
       "json",
       "html",
       "text-summary"
-    ],
-    "testEnvironment": "node"
+    ]
   }
 }

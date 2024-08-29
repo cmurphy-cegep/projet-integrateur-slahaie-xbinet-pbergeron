@@ -5,7 +5,8 @@ import FormulaireLogin from './pages/FormulaireLogin.vue';
 import FormulaireInscription from './pages/FormulaireInscription.vue';
 import RecetteDetaillee  from './pages/RecetteDetaillee.vue';
 import ListeRecette from './pages/listeRecette/ListeRecette.vue'
-
+import FormulaireNouvelleRecette from './pages/FormulaireNouvelleRecette.vue';
+import FormulaireModification from './pages/FormulaireModification.vue';
 const app = createApp(App);
 
 const router = createRouter({
@@ -14,7 +15,9 @@ const router = createRouter({
         { path: '/', component: ListeRecette},
         { path: '/login', component: FormulaireLogin},
         { path: '/recettes/:recetteKey', component: RecetteDetaillee, props: true},
-        { path: '/inscription', component: FormulaireInscription}
+        { path: '/inscription', component: FormulaireInscription},
+        { path: '/nouvelleRecette', component: FormulaireNouvelleRecette},
+        { path: '/modification/:recetteKey', component: FormulaireModification, props: true}
     ]
 });
 

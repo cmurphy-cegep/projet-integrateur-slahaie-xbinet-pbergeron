@@ -1,20 +1,35 @@
 <template>
     <div>
-        <div v-for="(commentaire) in  commentaires" :commentaire = "commentaire.commentaire", :date = "commentaire.date_publication"></div>
+        <form @submit.prevent="envoyerCommentaire(recetteKey)">
+            <div>
+                <textarea id="commentaire" name="commentaire" rows="4" cols="50" v-model="commentaire_send"></textarea>
+            </div>    
+            <button>Commentez</button>
+        </form>
+        <commentaireIndividuel 
+            v-for="(commentaire, index) in commentaires" 
+            :key="index"
+            :utilisateur="commentaire.utilisateur" 
+            :commentaire="commentaire.commentaire"
+            :date="commentaire.date" />
     </div>
 </template>
 
 <script>
 import session from '../session';
+import commentaireIndividuel from './commentaireIndividuel.vue';
+
 export default {
+    components: {
+        commentaireIndividuel
+    },
     data: function () {
         return {
-            commentaire: [""],
+            commentaires: [],
             commentaire_send: ""
         }
     },
     props: {
-        commentaires: [],
         recetteKey: String     
     },
     methods: {
@@ -24,54 +39,53 @@ export default {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error("note introuvable");   
+                    throw new Error("Un probleme est survenu");   
                 }
             }).then((commentaireRecu) => {
-                if (!commentaireRecu) {
-                    this.commentaire = [];
-                } else {
-                    this.commentaires = commentaireRecu;
-                }
+                this.commentaires = commentaireRecu || [];
             }).catch((error) => {
                 console.log("Erreur", error);
             });
         },
         envoyerCommentaire(recetteKey) {
-            if (session.id_utilisateur == null) {
-                alert("Vous devez être connecté afin de soumettre un commentaire.")
-                throw new Error("Erreur");
-            }
-            const envoiNote = {
-                id_recette: recetteKey,
-                id_utilisateur: session.id_utilisateur,
-                commentaire: this.commentaire_send
-            };
-            fetch('/api/commentaire', {
-                method: 'POST',
-                headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(envoiCommentaire)
-            }
-            ).then((response) => {
-                if (response.ok) {
-                    alert("Commentaire envoyé.")
-                    this.chargerNote(recetteKey);
-                } else {
-                        alert("Erreur lors de l'envoi de la note.")
-                }
-            }).catch((error) => {
-                console.log("Erreur", error);
-            });
+    if (!session.id_utilisateur) {
+        alert("Vous devez être connecté afin de soumettre un commentaire.");
+        return;
+    }
+
+    const envoiCommentaire = {
+        id_recette: recetteKey,
+        id_utilisateur: session.id_utilisateur,
+        commentaire: this.commentaire_send
+    };
+
+    fetch('/api/commentaire/', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(envoiCommentaire)
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return response.text().then(text => { throw new Error(text); });
         }
+    })
+    .then(() => {
+        alert("Commentaire envoyé.");
+        this.chargerCommentaire(recetteKey);
+        this.commentaire_send = '';
+    })
+    .catch(error => {
+        console.error("Erreur lors de l'envoi du commentaire:", error);
+        alert("Erreur lors de l'envoi du commentaire. Veuillez réessayer.");
+    });
+}
     },
     mounted() {
         this.chargerCommentaire(this.recetteKey);
-    },
-    watch: {
-        note(newCommentaire) {
-            this.note = newCommentaire;
-        }
     }
 }
 </script>

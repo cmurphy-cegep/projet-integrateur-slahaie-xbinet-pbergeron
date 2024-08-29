@@ -11,7 +11,7 @@
                 <router-link to="/">Accueil</router-link>
             </div>
             <div v-if="session.id_utilisateur && session.admin">
-                <router-link to="/">Administration</router-link>
+                <router-link to="/nouvelleRecette">Nouvelle recette</router-link>
             </div>
             <div v-if="session.id_utilisateur">
                 <a href="" @click.prevent="session.disconnect()">Déconnexion</a>

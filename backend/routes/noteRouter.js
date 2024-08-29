@@ -14,10 +14,10 @@ router.post('/', (req, res, next) => {
         return next({ status: 300, message: "Vous n'êtes pas connecté."});
     } else {
         noteQueries.noteCheck(id_utilisateur, id_recette).then(result => {
-            if (result == undefined) {
-                noteQueries.postNote(id_recette, id_utilisateur, note).then( () => {
-                    const respNote = noteQueries.calculateAverageRating(note);
-                    res.json(respNote);
+            if (result == false) {
+                noteQueries.postNote(id_recette, id_utilisateur, note).then(respNote  => {
+                    const response = noteQueries.calculateAverageRating(respNote);
+                    res.json(response);
                 })
             } else if (result == id_utilisateur) {
                 return next({ status: 404, message: "Vous avez déjà envoyé une note"});

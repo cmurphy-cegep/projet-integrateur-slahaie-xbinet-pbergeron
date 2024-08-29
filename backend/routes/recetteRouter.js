@@ -15,6 +15,16 @@ router.get('/:id_recette', (req, res, next) => {
     });
 })
 
+router.put('/', async (req, res, next) => {
+    if((await recetteQueries.getRecette(req.body.id)) != undefined){
+        recetteQueries.updateRecette(req.body);
+        return next({ status: 200, message: "Recette mis a jour"});
+    }else{
+        recetteQueries.addRecette(req.body);
+        return next({ status: 200, message: "Recette ajouter"})
+    }
+})
+
 router.get('/', (req, res, next) => {
     recetteQueries.getAllRecettes().then(recettes => {
         res.json(recettes);
@@ -27,13 +37,17 @@ router.get('/images/:id', (req, res) => {
     const id = req.params.id;
     const inputFilePath = './images/'+id;
     sharp(inputFilePath).toBuffer().then(data=>{
-        console.log('Buffer',data);
         res.send(data);
     })
     .catch( () =>{
         res.send(onePixelTransparentPngImage);
     });
 
-    
+
 });
+
+router.delete('/:recetteKey', (req, res) => {
+    recetteQueries.supprimerRecette(req.params.recetteKey);
+    res.send("OK");
+})
 module.exports = router;

@@ -1,5 +1,7 @@
 <template>
     <h2>{{nom}}</h2>
+    <div v-if="session"><router-link :to="'/modification/' + this.recetteKey">Éditer</router-link></div>
+    <div><button v-if="session" @click="supprimerRecette(recetteKey)">Supprimer</button></div>
     <div class="infoGeneral">
         <img v-bind:src= "imageSrc"/>
         <div>
@@ -24,7 +26,7 @@
         <Note :note :recetteKey></Note>
     </div>
     <div>
-        <Commentaire :commentaire :recetteKey></Commentaire>
+        <commentaire :recetteKey></commentaire>
     </div>
     
 </template>
@@ -34,6 +36,7 @@ import Ingredient from '../components/ingredient.vue';
 import Etape from '../components/etape.vue';
 import Note from '../components/Note.vue';
 import commentaire from '../components/commentaire.vue';
+import session from '../session';
 import { addApiPrefixToPath } from '../api_utils';
 
 export default {
@@ -41,7 +44,7 @@ export default {
         Ingredient,
         Etape,
         Note,
-        Commentaire
+        commentaire,
         
     },
     data: function () {
@@ -53,7 +56,8 @@ export default {
             portion: 0,
             description: "",
             ingredients: [],
-            etapes: []
+            etapes: [],
+            session: session.admin
         }
     },
     methods: {
@@ -82,6 +86,26 @@ export default {
                 }).catch((error) => {
                     console.log("Erreur", error);
                 });
+        },
+        supprimerRecette(recetteKey) {
+            if (!session) {
+                alert("Vous n'avez pas accès à ces droits!");
+            } else {
+                fetch('/api/recettes/' + recetteKey, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            ).then( response => {
+                if (response.ok) {
+                    alert("Recette supprimée");
+                    this.$router.push('/');
+                } else {
+            alert("Erreur lors de la suppression de la recette");
+        }
+            })
+            }
         }
     },
     mounted() {
