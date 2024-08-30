@@ -135,7 +135,7 @@ describe("Fetching all recettes", function () {
     expect(recette).toStrictEqual(expected);
   });
 
-  afterAll(async () => {
+  afterAll(function () {
     pool.query.mockRestore();
   });
 })

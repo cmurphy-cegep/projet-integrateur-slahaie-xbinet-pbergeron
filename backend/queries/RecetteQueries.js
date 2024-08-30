@@ -153,28 +153,3 @@ const getEtape = async (recette_id) => {
     return await result.rows;
 }
 exports.getEtape = getEtape;
-const getRecetteImageContent = async () => {
-    const result = await pool.query(
-        `SELECT image FROM recettes WHERE id_recette = $1`,
-        [recetteId]
-    );
-
-    const row = result.rows[0];
-    if (row) {
-        return {
-            imageContent: row.image,
-        };
-    }
-
-    return undefined;
-};
-exports.getRecetteImageContent = getRecetteImageContent;
-
-const supprimerRecette = async (idRecette) => {
-    await pool.query(
-        `DELETE FROM recettes
-        WHERE id_recette = $1`,
-        [idRecette]
-    );
-}
-exports.supprimerRecette = supprimerRecette;

@@ -1,3 +1,4 @@
+
 const pool = require('./DBPool');
 
 const postNote = async (id_recette, id_utilisateur, note) => {
@@ -29,16 +30,13 @@ const noteCheck = async (id_utilisateur,id_recette) => {
         WHERE id_recette = $1`, 
         [id_recette]
     );
-    if (result.rows.length == 0) {
-        return false;
-    } else {
         for (const user of result.rows) {
             if(user == id_utilisateur){
                 return true
             }
         };
         return false
-    }
+    
 };
 exports.noteCheck = noteCheck;
 
